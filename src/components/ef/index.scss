@@ -65,6 +65,7 @@
 .ef-node-container {
     position: absolute;
     display: flex;
+    justify-content: center;
     width: 170px;
     height: 32px;
     border: 1px solid #E0E3E7;
@@ -79,6 +80,9 @@
     /*box-shadow: #1879FF 0px 0px 12px 0px;*/
     background-color: #F0F7FF;
     border: 1px dashed #1879FF;
+}
+.ef-node-container:hover .ef-node-tip {
+    display: block;
 }
 
 /*节点激活样式*/
@@ -98,8 +102,8 @@
 
 /*节点左侧的图标*/
 .ef-node-left-ico {
-    line-height: 32px;
-    margin-left: 8px;
+    /* line-height: 32px; */
+    margin-right: 8px;
 }
 
 .ef-node-left-ico:hover {
@@ -111,9 +115,9 @@
 .ef-node-text {
     color: #565758;
     font-size: 12px;
-    line-height: 32px;
-    margin-left: 8px;
-    width: 100px;
+    /* line-height: 32px; */
+    /* margin-left: 8px; */
+    width: 100%;
     /* 设置超出宽度文本显示方式*/
     white-space: nowrap;
     overflow: hidden;
@@ -121,9 +125,91 @@
     text-align: center;
 }
 
+/* 节点上用于与其他节点延伸的提示块 */
+.ef-node-tip {
+    position: absolute;
+    display: none;
+    width: 7px;
+    height: 7px;
+    background-color: #cccccc;
+    cursor: crosshair;
+}
+.ef-node-tip-top {
+    left: 50%;
+    margin-left: -4px;
+    top: -4px;
+}
+.ef-node-tip-right {
+    top: 50%;
+    margin-top: -4px;
+    right: -4px;
+}
+.ef-node-tip-bottom {
+    left: 50%;
+    margin-left: -4px;
+    bottom: -4px;
+}
+.ef-node-tip-left {
+    top: 50%;
+    margin-top: -4px;
+    left: -4px;
+}
+
+.node-start {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    line-height: 60px;
+    text-align: center;
+}
+.node-judge {
+    width: 60px;
+    height: 60px;
+    border-radius: 0;
+    transform:rotate(45deg);
+    -ms-transform:rotate(45deg); 	/* IE 9 */
+    -moz-transform:rotate(45deg); 	/* Firefox */
+    -webkit-transform:rotate(45deg); /* Safari 和 Chrome */
+    -o-transform:rotate(45deg); 	/* Opera */
+    line-height: 60px;
+    text-align: center;
+    .ef-node-text {
+        transform:rotate(-45deg);
+        -ms-transform:rotate(-45deg); 	/* IE 9 */
+        -moz-transform:rotate(-45deg); 	/* Firefox */
+        -webkit-transform:rotate(-45deg); /* Safari 和 Chrome */
+        -o-transform:rotate(-45deg); 	/* Opera */
+    }
+}
+.node-end {
+    width: 100px;
+    height: 60px;
+    border-radius: 50%;
+    line-height: 60px;
+    text-align: center;
+}
+.node-dataSource {
+    width: 80px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+}
+.node-dataSource {
+    width: 80px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+}
+.node-basicModel {
+    width: 100px;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+}
+
 /*节点右侧的图标*/
 .ef-node-right-ico {
-    line-height: 32px;
+    /* line-height: 32px; */
     position: absolute;
     right: 5px;
     color: #84CF65;
@@ -193,6 +279,7 @@
 
 /* label 为空的样式 */
 .emptyFlowLabel {
+    
 }
 
 
@@ -212,13 +299,6 @@
 .ef-rectangle-hover {
     background-color: red;
 }
-
-.ef-img {
-}
-
-.ef-img-hover {
-}
-
 
 .ef-drop-hover{
     border: 1px dashed #1879FF;

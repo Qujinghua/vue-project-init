@@ -7,17 +7,21 @@
     :class="nodeContainerClass"
   >
     <!-- 最左侧的那条竖线 -->
-    <div class="ef-node-left"></div>
+    <!-- <div class="ef-node-left"></div> -->
     <!-- 节点类型的图标 -->
-    <div class="ef-node-left-ico flow-node-drag">
+    <!-- <div class="ef-node-left-ico flow-node-drag">
       <i :class="nodeIcoClass"></i>
-    </div>
+    </div> -->
     <!-- 节点名称 -->
     <div class="ef-node-text" :show-overflow-tooltip="true">
       {{ node.name }}
     </div>
+    <span class="ef-node-tip ef-node-tip-top flow-node-drag"></span>
+    <span class="ef-node-tip ef-node-tip-right flow-node-drag"></span>
+    <span class="ef-node-tip ef-node-tip-bottom flow-node-drag"></span>
+    <span class="ef-node-tip ef-node-tip-left flow-node-drag"></span>
     <!-- 节点状态图标 -->
-    <div class="ef-node-right-ico">
+    <!-- <div class="ef-node-right-ico">
       <i
         class="el-icon-circle-check el-node-state-success"
         v-show="node.state === 'success'"
@@ -34,7 +38,7 @@
         class="el-icon-loading el-node-state-running"
         v-show="node.state === 'running'"
       ></i>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -55,6 +59,11 @@ export default {
           this.activeElement.type == "node"
             ? this.activeElement.nodeId === this.node.id
             : false,
+        "node-start": this.node.nodeType == "start" ? true : false,
+        "node-judge": this.node.nodeType == "judge" ? true : false,
+        "node-end": this.node.nodeType == "end" ? true : false,
+        "node-dataSource": this.node.nodeType == "dataSource" ? true : false,
+        "node-basicModel": this.node.nodeType == "basicModel" ? true : false,
       };
     },
     // 节点容器样式

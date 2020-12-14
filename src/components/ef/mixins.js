@@ -7,7 +7,7 @@ export const easyFlowMixin = {
                 // 容器ID
                 Container: 'efContainer',
                 // 连线的样式，直线或者曲线等，可选值:  StateMachine、Flowchart，Bezier、Straight
-                Connector: ['Bezier', { curviness: 100 }],
+                Connector: ['Flowchart', { curviness: 100 }],
                 // Connector: ['Straight', {stub: 20, gap: 1}],
                 // Connector: ['Flowchart', {stub: 30, gap: 1, alwaysRespectStubs: false, midpoint: 0.5, cornerRadius: 10}],
                 // Connector: ['StateMachine', {margin: 5, curviness: 10, proximityLimit: 80}],

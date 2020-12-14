@@ -59,23 +59,34 @@ export default {
         {
           id: "1",
           type: "group",
-          name: "开始节点",
+          name: "流程节点",
           ico: "el-icon-video-play",
           open: true,
           children: [
             {
               id: "11",
-              type: "timer",
-              name: "数据接入",
-              ico: "el-icon-time",
+              type: "start",
+              nodeType: "start",
+              name: "开始",
+              ico: "el-icon-help",
               // 自定义覆盖样式
               style: {},
             },
             {
               id: "12",
-              type: "task",
-              name: "接口调用",
-              ico: "el-icon-odometer",
+              type: "judge",
+              nodeType: "judge",
+              name: "判定",
+              ico: "el-icon-time",
+              // 自定义覆盖样式
+              style: {},
+            },
+            {
+              id: "13",
+              type: "end",
+              nodeType: "end",
+              name: "结束",
+              ico: "el-icon-c-scale-to-original",
               // 自定义覆盖样式
               style: {},
             },
@@ -84,22 +95,69 @@ export default {
         {
           id: "2",
           type: "group",
-          name: "结束节点",
+          name: "数据源",
           ico: "el-icon-video-pause",
           open: true,
           children: [
             {
               id: "21",
-              type: "end",
-              name: "流程结束",
-              ico: "el-icon-caret-right",
+              type: "dataSource",
+              nodeType: "dataSource",
+              name: "数据源1",
+              ico: "el-icon-tickets",
               // 自定义覆盖样式
               style: {},
             },
             {
               id: "22",
-              type: "over",
-              name: "数据清理",
+              type: "dataSource",
+              nodeType: "dataSource",
+              name: "数据源2",
+              ico: "el-icon-tickets",
+              // 自定义覆盖样式
+              style: {},
+            },
+            {
+              id: "23",
+              type: "dataSource",
+              nodeType: "dataSource",
+              name: "数据源3",
+              ico: "el-icon-tickets",
+              // 自定义覆盖样式
+              style: {},
+            },
+          ],
+        },
+        {
+          id: "3",
+          type: "group",
+          name: "基础模型",
+          ico: "el-icon-video-pause",
+          open: true,
+          children: [
+            {
+              id: "31",
+              type: "basicModel",
+              nodeType: "basicModel",
+              name: "基础模型1",
+              ico: "el-icon-shopping-cart-full",
+              // 自定义覆盖样式
+              style: {},
+            },
+            {
+              id: "32",
+              type: "basicModel",
+              nodeType: "basicModel",
+              name: "基础模型2",
+              ico: "el-icon-shopping-cart-full",
+              // 自定义覆盖样式
+              style: {},
+            },
+            {
+              id: "33",
+              type: "basicModel",
+              nodeType: "basicModel",
+              name: "基础模型3",
               ico: "el-icon-shopping-cart-full",
               // 自定义覆盖样式
               style: {},
