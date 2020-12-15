@@ -81,7 +81,7 @@
         </div>
       </el-header>
       <el-main class="el-main">
-        <div class="el-main-breadcrumb">
+        <!-- <div class="el-main-breadcrumb">
           <el-breadcrumb
             v-if="lists.length > 1"
             separator-class="el-icon-arrow-right"
@@ -94,7 +94,7 @@
               {{ item.name }}
             </el-breadcrumb-item>
           </el-breadcrumb>
-        </div>
+        </div> -->
         <div class="el-main-info">
           <router-view />
         </div>
@@ -229,7 +229,7 @@ export default {
       }
     }
     &-info {
-      padding: 24px;
+      // padding: 24px;
       & > div {
         background-color: #fff;
       }
