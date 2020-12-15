@@ -1,6 +1,6 @@
 <template>
   <el-container class="el-container">
-    <el-aside :width="!isCollapse ? '216px' : 'auto'">
+    <el-aside class="el-menu-vertical-demo" :collapse="isCollapse">
       <div class="breadcrumb-container">
         <el-menu
           :default-active="defaultActive"
@@ -71,7 +71,7 @@
               </el-link>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item @click.native="logout">
-                  <span style="text-align: center; display: block;">
+                  <span style="text-align: center; display: block">
                     退出登录
                   </span>
                 </el-dropdown-item>
@@ -169,6 +169,14 @@ export default {
 };
 </script>
 <style lang="scss">
+.el-menu--collapse > .el-menu-item span,
+.el-menu--collapse > .el-submenu > .el-submenu__title span {
+  height: 0;
+  width: 0;
+  overflow: hidden;
+  visibility: hidden;
+  display: inline-block;
+}
 .el-container {
   height: 100vh;
   .breadcrumb-container {
