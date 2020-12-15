@@ -43,7 +43,7 @@ var dataD = {
         label: '直线,自定义线样式,固定锚点',
         connector: 'Straight',
         anchors: ['Top', 'Bottom'],
-        paintStyle: {strokeWidth: 2, stroke: '#1879FF'}
+        paintStyle: { strokeWidth: 2, stroke: '#1879FF' }
     }, {
         from: 'nodeA',
         to: 'nodeC',

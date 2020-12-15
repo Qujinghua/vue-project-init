@@ -56,6 +56,6 @@ let dataB = {
     ]
 }
 
-export function getDataB () {
+export function getDataB() {
     return dataB
 }
