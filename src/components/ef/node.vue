@@ -2,7 +2,7 @@
   <div
     ref="node"
     :style="nodeContainerStyle"
-    @click="clickNode"
+    @dblclick="clickNode"
     @mouseup="changeNodeSite"
     :class="nodeContainerClass"
   >

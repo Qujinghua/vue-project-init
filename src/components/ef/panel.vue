@@ -121,14 +121,19 @@
           background-color: #fbfbfb;
         "
       >
-        <flow-node-form
+        <!-- <flow-node-form
           ref="nodeForm"
           @setLineLabel="setLineLabel"
           @repaintEverything="repaintEverything"
-        ></flow-node-form>
+        ></flow-node-form> -->
       </div>
     </div>
     <!-- 流程数据详情 -->
+    <node-form-dialog
+      ref="nodeForm"
+      @setLineLabel="setLineLabel"
+      @repaintEverything="repaintEverything"
+    ></node-form-dialog>
     <flow-info v-if="flowInfoVisible" ref="flowInfo" :data="data"></flow-info>
     <flow-help v-if="flowHelpVisible" ref="flowHelp"></flow-help>
   </div>
@@ -144,7 +149,8 @@ import flowNode from "@/components/ef/node";
 import nodeMenu from "@/components/ef/node_menu";
 import FlowInfo from "@/components/ef/info";
 import FlowHelp from "@/components/ef/help";
-import FlowNodeForm from "./node_form";
+// import FlowNodeForm from "./node_form";
+import NodeFormDialog from "./node_form_dialog";
 import lodash from "lodash";
 import { getDataA } from "./data_A";
 import { getDataB } from "./data_B";
@@ -185,8 +191,9 @@ export default {
     flowNode,
     nodeMenu,
     FlowInfo,
-    FlowNodeForm,
+    // FlowNodeForm,
     FlowHelp,
+    NodeFormDialog,
   },
   directives: {
     flowDrag: {
@@ -248,7 +255,7 @@ export default {
         // 初始化节点
         this.loadEasyFlow();
         // 单点击了连接线, https://www.cnblogs.com/ysx215/p/7615677.html
-        this.jsPlumb.bind("click", (conn, originalEvent) => {
+        this.jsPlumb.bind("dblclick", (conn, originalEvent) => {
           console.log(originalEvent);
           this.activeElement.type = "line";
           this.activeElement.sourceId = conn.sourceId;
