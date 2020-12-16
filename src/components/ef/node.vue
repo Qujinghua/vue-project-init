@@ -2,9 +2,11 @@
   <div
     ref="node"
     :style="nodeContainerStyle"
-    @dblclick="clickNode"
+    @dblclick="dbClickNode"
+    @click="clickNode"
     @mouseup="changeNodeSite"
     :class="nodeContainerClass"
+    @contextmenu.prevent="rightMenuClick"
   >
     <!-- 最左侧的那条竖线 -->
     <!-- <div class="ef-node-left"></div> -->
@@ -51,6 +53,42 @@ export default {
   data() {
     return {};
   },
+  //   directives: {
+  //     rightMenu: {
+  //       bind(el, binding, vnode, oldNode) {
+  //         // console.log(el, binding, vnode, oldNode);
+  //         console.log(el, binding, vnode, oldNode);
+  //         let self = vnode.context;
+  //         if (!binding) {
+  //           return;
+  //         }
+  //         el.bind("contextmenu", function (e) {
+  //           console.log(e);
+  //           return false;
+  //         });
+  //         el.onmousedown = (e) => {
+  //           //  鼠标按下，计算当前原始距离可视区的高度
+  //           let disX = e.clientX;
+  //           let disY = e.clientY;
+  //           el.style.cursor = "move";
+  //           if (e.button == 2) {
+  //             // 鼠标右键
+  //             let nodeParams = {
+  //               rightMenuX: disX,
+  //               rightMenuY: disY,
+  //             };
+  //             self.nodeRightMenu(nodeParams);
+  //             return false;
+  //           }
+
+  //           document.onmouseup = function (e) {
+  //             console.log(e);
+  //             // self.rightMenuShow = false;
+  //           };
+  //         };
+  //       },
+  //     },
+  //   },
   computed: {
     nodeContainerClass() {
       return {
@@ -86,6 +124,24 @@ export default {
     clickNode() {
       this.$emit("clickNode", this.node.id);
     },
+    dbClickNode() {
+      this.$emit("dbClickNode", this.node.id);
+    },
+    rightMenuClick() {
+      //   this.$refs.node.onmousedown = (e) => {
+      //     console.log(e.clientX, e.clientY);
+      //     let nodeParams = {
+      //       nodeId: this.node.id,
+      //       rightMenuX: e.clientX,
+      //       rightMenuY: e.clientY,
+      //     };
+      //     this.$emit("nodeRightMenu", nodeParams);
+      //   };
+    },
+    // nodeRightMenu(params) {
+    //   let nodeParams = { ...{ nodeId: this.node.id }, ...params };
+    //   this.$emit("nodeRightMenu", nodeParams);
+    // },
     // 鼠标移动后抬起
     changeNodeSite() {
       // 避免抖动

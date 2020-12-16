@@ -1,4 +1,4 @@
-let dataB = {
+let mockData = {
     "name": "流程B",
     "nodeList": [
         {
@@ -106,6 +106,4 @@ let dataB = {
     ]
 }
 
-export function getDataB() {
-    return dataB
-}
+export default mockData

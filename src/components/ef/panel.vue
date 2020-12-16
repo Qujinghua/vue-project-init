@@ -45,42 +45,6 @@
               >流程信息</el-button
             >
             <el-button
-              type="primary"
-              plain
-              round
-              @click="dataReloadA"
-              icon="el-icon-refresh"
-              size="mini"
-              >切换流程A</el-button
-            >
-            <el-button
-              type="primary"
-              plain
-              round
-              @click="dataReloadB"
-              icon="el-icon-refresh"
-              size="mini"
-              >切换流程B</el-button
-            >
-            <el-button
-              type="primary"
-              plain
-              round
-              @click="dataReloadC"
-              icon="el-icon-refresh"
-              size="mini"
-              >切换流程C</el-button
-            >
-            <el-button
-              type="primary"
-              plain
-              round
-              @click="dataReloadD"
-              icon="el-icon-refresh"
-              size="mini"
-              >自定义样式</el-button
-            >
-            <el-button
               type="info"
               plain
               round
@@ -107,11 +71,17 @@
             @changeNodeSite="changeNodeSite"
             @nodeRightMenu="nodeRightMenu"
             @clickNode="clickNode"
+            @dbClickNode="dbClickNode"
           >
           </flow-node>
         </template>
         <!-- 给画布一个默认的宽度和高度 -->
         <div style="position: absolute; top: 2000px; left: 2000px">&nbsp;</div>
+      </div>
+      <div class="right-menu" id="rightmenu" v-if="rightMenuShow">
+        <el-card class="box-card">
+          <el-button type="text">文字按钮</el-button>
+        </el-card>
       </div>
       <!-- 右侧表单 -->
       <div
@@ -121,16 +91,16 @@
           background-color: #fbfbfb;
         "
       >
-        <!-- <flow-node-form
+        <flow-node-form
           ref="nodeForm"
           @setLineLabel="setLineLabel"
           @repaintEverything="repaintEverything"
-        ></flow-node-form> -->
+        ></flow-node-form>
       </div>
     </div>
     <!-- 流程数据详情 -->
     <node-form-dialog
-      ref="nodeForm"
+      ref="dbClickNodeForm"
       @setLineLabel="setLineLabel"
       @repaintEverything="repaintEverything"
     ></node-form-dialog>
@@ -149,13 +119,9 @@ import flowNode from "@/components/ef/node";
 import nodeMenu from "@/components/ef/node_menu";
 import FlowInfo from "@/components/ef/info";
 import FlowHelp from "@/components/ef/help";
-// import FlowNodeForm from "./node_form";
+import FlowNodeForm from "./node_form";
 import NodeFormDialog from "./node_form_dialog";
 import lodash from "lodash";
-import { getDataA } from "./data_A";
-import { getDataB } from "./data_B";
-import { getDataC } from "./data_C";
-import { getDataD } from "./data_D";
 
 export default {
   data() {
@@ -169,6 +135,8 @@ export default {
       // 是否加载完毕标志位
       loadEasyFlowFinish: false,
       flowHelpVisible: false,
+      //   右键菜单
+      rightMenuShow: false,
       // 数据
       data: {},
       // 激活的元素、可能是节点、可能是连线
@@ -191,7 +159,7 @@ export default {
     flowNode,
     nodeMenu,
     FlowInfo,
-    // FlowNodeForm,
+    FlowNodeForm,
     FlowHelp,
     NodeFormDialog,
   },
@@ -199,12 +167,13 @@ export default {
     flowDrag: {
       bind(el, binding, vnode, oldNode) {
         console.log(vnode, oldNode);
+        let self = vnode.context;
         if (!binding) {
           return;
         }
         el.onmousedown = (e) => {
           if (e.button == 2) {
-            // 右键不管
+            // 鼠标右键
             return;
           }
           //  鼠标按下，计算当前原始距离可视区的高度
@@ -226,6 +195,7 @@ export default {
 
           document.onmouseup = function (e) {
             console.log(e);
+            self.rightMenuShow = false;
             el.style.cursor = "auto";
             document.onmousemove = null;
             document.onmouseup = null;
@@ -236,12 +206,15 @@ export default {
   },
   mounted() {
     this.jsPlumb = jsPlumb.getInstance();
-    this.$nextTick(() => {
-      // 默认加载流程A的数据、在这里可以根据具体的业务返回符合流程数据格式的数据即可
-      this.dataReload(getDataB());
-    });
+    // this.$nextTick(() => {
+    // 默认加载流程A的数据、在这里可以根据具体的业务返回符合流程数据格式的数据即可
+    //   this.dataReload(getDataB());
+    // });
   },
   methods: {
+    initData(params) {
+      this.dataReload(params);
+    },
     // 返回唯一标识
     getUUID() {
       return Math.random().toString(36).substr(3, 10);
@@ -255,12 +228,24 @@ export default {
         // 初始化节点
         this.loadEasyFlow();
         // 单点击了连接线, https://www.cnblogs.com/ysx215/p/7615677.html
-        this.jsPlumb.bind("dblclick", (conn, originalEvent) => {
+        this.jsPlumb.bind("click", (conn, originalEvent) => {
           console.log(originalEvent);
           this.activeElement.type = "line";
           this.activeElement.sourceId = conn.sourceId;
           this.activeElement.targetId = conn.targetId;
           this.$refs.nodeForm.lineInit({
+            from: conn.sourceId,
+            to: conn.targetId,
+            label: conn.getLabel(),
+          });
+        });
+        // 双击连线
+        this.jsPlumb.bind("dblclick", (conn, originalEvent) => {
+          console.log(originalEvent);
+          this.activeElement.type = "line";
+          this.activeElement.sourceId = conn.sourceId;
+          this.activeElement.targetId = conn.targetId;
+          this.$refs.dbClickNodeForm.lineInit({
             from: conn.sourceId,
             to: conn.targetId,
             label: conn.getLabel(),
@@ -530,6 +515,11 @@ export default {
       this.activeElement.nodeId = nodeId;
       this.$refs.nodeForm.nodeInit(this.data, nodeId);
     },
+    dbClickNode(nodeId) {
+      this.activeElement.type = "node";
+      this.activeElement.nodeId = nodeId;
+      this.$refs.dbClickNodeForm.nodeInit(this.data, nodeId);
+    },
     // 是否具有该线
     hasLine(from, to) {
       for (var i = 0; i < this.data.lineList.length; i++) {
@@ -544,11 +534,14 @@ export default {
     hashOppositeLine(from, to) {
       return this.hasLine(to, from);
     },
-    nodeRightMenu(nodeId, evt) {
-      this.menu.show = true;
-      this.menu.curNodeId = nodeId;
-      this.menu.left = evt.x + "px";
-      this.menu.top = evt.y + "px";
+    nodeRightMenu(nodeParams) {
+      this.rightMenuShow = true;
+      console.log(nodeParams);
+      this.$nextTick(() => {
+        let rightMenuDom = document.getElementById("rightmenu");
+        rightMenuDom.style.top = nodeParams.rightMenuY + "px";
+        rightMenuDom.style.left = nodeParams.rightMenuX + "px";
+      });
     },
     repaintEverything() {
       this.jsPlumb.repaint();
@@ -576,22 +569,6 @@ export default {
           });
         });
       });
-    },
-    // 模拟载入数据dataA
-    dataReloadA() {
-      this.dataReload(getDataA());
-    },
-    // 模拟载入数据dataB
-    dataReloadB() {
-      this.dataReload(getDataB());
-    },
-    // 模拟载入数据dataC
-    dataReloadC() {
-      this.dataReload(getDataC());
-    },
-    // 模拟载入数据dataD
-    dataReloadD() {
-      this.dataReload(getDataD());
     },
     zoomAdd() {
       if (this.zoom >= 1) {
@@ -639,3 +616,8 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+.right-menu {
+  position: absolute;
+}
+</style>

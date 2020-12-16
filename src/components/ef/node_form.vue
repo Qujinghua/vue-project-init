@@ -9,9 +9,9 @@
           label-width="80px"
           v-show="type === 'node'"
         >
-          <el-form-item label="类型">
+          <!-- <el-form-item label="类型">
             <el-input v-model="node.type" :disabled="true"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="名称">
             <el-input v-model="node.name"></el-input>
           </el-form-item>
@@ -21,10 +21,10 @@
           <el-form-item label="top坐标">
             <el-input v-model="node.top" :disabled="true"></el-input>
           </el-form-item>
-          <el-form-item label="ico图标">
+          <!-- <el-form-item label="ico图标">
             <el-input v-model="node.ico"></el-input>
-          </el-form-item>
-          <el-form-item label="状态">
+          </el-form-item> -->
+          <!-- <el-form-item label="状态">
             <el-select v-model="node.state" placeholder="请选择">
               <el-option
                 v-for="item in stateList"
@@ -34,12 +34,10 @@
               >
               </el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item>
-            <el-button icon="el-icon-close">重置</el-button>
-            <el-button type="primary" icon="el-icon-check" @click="save"
-              >保存</el-button
-            >
+            <!-- <el-button icon="el-icon-close">重置</el-button> -->
+            <el-button type="primary" @click="save">保存</el-button>
           </el-form-item>
         </el-form>
 
@@ -53,7 +51,7 @@
             <el-input v-model="line.label"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button icon="el-icon-close">重置</el-button>
+            <!-- <el-button icon="el-icon-close">重置</el-button> -->
             <el-button type="primary" icon="el-icon-check" @click="saveLine"
               >保存</el-button
             >
