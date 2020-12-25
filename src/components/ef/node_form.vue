@@ -24,17 +24,6 @@
           <!-- <el-form-item label="ico图标">
             <el-input v-model="node.ico"></el-input>
           </el-form-item> -->
-          <!-- <el-form-item label="状态">
-            <el-select v-model="node.state" placeholder="请选择">
-              <el-option
-                v-for="item in stateList"
-                :key="item.state"
-                :label="item.label"
-                :value="item.state"
-              >
-              </el-option>
-            </el-select>
-          </el-form-item> -->
           <el-form-item>
             <!-- <el-button icon="el-icon-close">重置</el-button> -->
             <el-button type="primary" @click="save">保存</el-button>
@@ -75,24 +64,6 @@ export default {
       node: {},
       line: {},
       data: {},
-      stateList: [
-        {
-          state: "success",
-          label: "成功",
-        },
-        {
-          state: "warning",
-          label: "警告",
-        },
-        {
-          state: "error",
-          label: "错误",
-        },
-        {
-          state: "running",
-          label: "运行中",
-        },
-      ],
     };
   },
   methods: {
@@ -125,7 +96,6 @@ export default {
           node.left = this.node.left;
           node.top = this.node.top;
           node.ico = this.node.ico;
-          node.state = this.node.state;
           this.$emit("repaintEverything");
         }
       });

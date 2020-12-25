@@ -76,7 +76,6 @@
             @changeNodeSite="changeNodeSite"
             @nodeRightMenu="nodeRightMenu"
             @clickNode="clickNode"
-            @dbClickNode="dbClickNode"
           >
           </flow-node>
         </template>
@@ -90,6 +89,7 @@
       </div>
       <!-- 右侧表单 -->
       <div
+        v-if="rightSideShow"
         style="
           width: 300px;
           border-left: 1px solid #dce3e8;
@@ -97,10 +97,17 @@
         "
       >
         <flow-node-form
+          v-show="activeElement.type == 'line'"
           ref="nodeForm"
           @setLineLabel="setLineLabel"
           @repaintEverything="repaintEverything"
         ></flow-node-form>
+        <node-form-model
+          v-show="activeElement.type == 'node'"
+          ref="nodeFormModel"
+          @setLineLabel="setLineLabel"
+          @repaintEverything="repaintEverything"
+        ></node-form-model>
       </div>
     </div>
     <!-- 流程数据详情 -->
@@ -126,6 +133,7 @@ import FlowInfo from "@/components/ef/info";
 import FlowHelp from "@/components/ef/help";
 import FlowNodeForm from "./node_form";
 import NodeFormDialog from "./node_form_dialog";
+import NodeFormModel from "./node_form_model";
 import lodash from "lodash";
 
 export default {
@@ -159,6 +167,7 @@ export default {
         targetId: undefined,
       },
       zoom: 0.5,
+      rightSideShow: false, // 右侧菜单是否显示
     };
   },
   // 一些基础配置移动该文件中
@@ -171,6 +180,7 @@ export default {
     FlowNodeForm,
     FlowHelp,
     NodeFormDialog,
+    NodeFormModel,
   },
   directives: {
     flowDrag: {
@@ -239,6 +249,7 @@ export default {
         this.jsPlumb.bind("click", (conn, originalEvent) => {
           console.log(originalEvent);
           this.activeElement.type = "line";
+          this.rightSideShow = true;
           this.activeElement.sourceId = conn.sourceId;
           this.activeElement.targetId = conn.targetId;
           this.$refs.nodeForm.lineInit({
@@ -248,17 +259,17 @@ export default {
           });
         });
         // 双击连线
-        this.jsPlumb.bind("dblclick", (conn, originalEvent) => {
-          console.log(originalEvent);
-          this.activeElement.type = "line";
-          this.activeElement.sourceId = conn.sourceId;
-          this.activeElement.targetId = conn.targetId;
-          this.$refs.dbClickNodeForm.lineInit({
-            from: conn.sourceId,
-            to: conn.targetId,
-            label: conn.getLabel(),
-          });
-        });
+        // this.jsPlumb.bind("dblclick", (conn, originalEvent) => {
+        //   console.log(originalEvent);
+        //   this.activeElement.type = "line";
+        //   this.activeElement.sourceId = conn.sourceId;
+        //   this.activeElement.targetId = conn.targetId;
+        //   this.$refs.dbClickNodeForm.lineInit({
+        //     from: conn.sourceId,
+        //     to: conn.targetId,
+        //     label: conn.getLabel(),
+        //   });
+        // });
         // 连线
         this.jsPlumb.bind("connection", (evt) => {
           let from = evt.source.id;
@@ -463,8 +474,9 @@ export default {
       //   }
       //   break;
       // }
-      var node = {
+      let node = {
         id: nodeId,
+        childDataSourceId: nodeMenu.childDataSourceId,
         trueId: trueNodeId,
         // name: nodeName,
         name: nodeMenu.name,
@@ -473,12 +485,39 @@ export default {
         left: left + "px",
         top: top + "px",
         ico: nodeMenu.ico,
-        state: "success",
+        attr: nodeMenu.nodeType == "basicModel" ? nodeMenu.attr : {},
       };
+      if (node.nodeType == "functionLanguage") {
+        this.$message.info("运行环境会根据模型自动加载，无需拖拽");
+        return false;
+      }
       /**
        * 这里可以进行业务判断、是否能够添加该节点
        */
       this.data.nodeList.push(node);
+      let childNodeItem = {};
+      let childNodeId = this.getUUID();
+      let childNode = {};
+      if (node.nodeType == "basicModel") {
+        childNodeItem = this.dataSourceNode.filter((el) => {
+          if (el.id === node.childDataSourceId) {
+            return el;
+          }
+        })[0];
+        if (childNodeItem.id) {
+          childNode = {
+            id: childNodeId,
+            trueId: childNodeItem.id,
+            name: childNodeItem.name,
+            type: childNodeItem.type,
+            nodeType: childNodeItem.nodeType,
+            left: left + "px",
+            top: top + 120 + "px",
+            ico: childNodeItem.ico,
+          };
+          this.data.nodeList.push(childNode);
+        }
+      }
       this.$nextTick(function () {
         this.jsPlumb.makeSource(nodeId, this.jsplumbSourceOptions);
         this.jsPlumb.makeTarget(nodeId, this.jsplumbTargetOptions);
@@ -489,6 +528,23 @@ export default {
             console.log("拖拽结束: ", el);
           },
         });
+        if (childNode.id) {
+          this.jsPlumb.makeSource(childNodeId, this.jsplumbSourceOptions);
+          this.jsPlumb.makeTarget(childNodeId, this.jsplumbTargetOptions);
+          this.jsPlumb.draggable(childNodeId, {
+            containment: "parent",
+            stop: function (el) {
+              // 拖拽节点结束后的对调
+              console.log("child拖拽结束: ", el);
+            },
+          });
+          let from = childNode.id;
+          let to = node.id;
+          this.jsPlumb.connect(
+            { source: from, target: to },
+            this.jsplumbConnectOptions
+          );
+        }
       });
     },
     /**
@@ -528,15 +584,18 @@ export default {
         .catch(() => {});
       return true;
     },
-    clickNode(nodeId) {
+    clickNode(node) {
       this.activeElement.type = "node";
-      this.activeElement.nodeId = nodeId;
-      this.$refs.nodeForm.nodeInit(this.data, nodeId);
-    },
-    dbClickNode(nodeId) {
-      this.activeElement.type = "node";
-      this.activeElement.nodeId = nodeId;
-      this.$refs.dbClickNodeForm.nodeInit(this.data, nodeId);
+      this.activeElement.nodeId = node.id;
+      if (node.nodeType == "basicModel") {
+        this.rightSideShow = true;
+      } else {
+        this.rightSideShow = false;
+      }
+      this.$nextTick(() => {
+        node.nodeType == "basicModel" &&
+          this.$refs.nodeFormModel.nodeInit(this.data, node.id);
+      });
     },
     // 是否具有该线
     hasLine(from, to) {

@@ -56,24 +56,6 @@ export default {
       node: {},
       line: {},
       data: {},
-      stateList: [
-        {
-          state: "success",
-          label: "成功",
-        },
-        {
-          state: "warning",
-          label: "警告",
-        },
-        {
-          state: "error",
-          label: "错误",
-        },
-        {
-          state: "running",
-          label: "运行中",
-        },
-      ],
     };
   },
   methods: {
@@ -120,7 +102,6 @@ export default {
           node.left = this.node.left;
           node.top = this.node.top;
           node.ico = this.node.ico;
-          node.state = this.node.state;
           this.$emit("repaintEverything");
         }
       });

@@ -75,6 +75,24 @@ export default {
             ico: "el-icon-shopping-cart-full",
             // 自定义覆盖样式
             style: {},
+            childDataSourceId: "21",
+            attr: {
+              algorithmParam: {
+                jobName: "",
+                launcherHost: "",
+                jobId: "",
+                ruleId: "",
+                dataGovernanceHost: "",
+                dataServerSeconds: "",
+              },
+              environmentVariable: {
+                type: "Java",
+                "num-executors": "",
+                SPARK_HOME: "",
+                "executor-memory": "",
+                "executor-cores": "",
+              },
+            },
           },
           {
             id: "32",
@@ -84,6 +102,24 @@ export default {
             ico: "el-icon-shopping-cart-full",
             // 自定义覆盖样式
             style: {},
+            childDataSourceId: "22",
+            attr: {
+              algorithmParam: {
+                jobName: "",
+                launcherHost: "",
+                jobId: "",
+                ruleId: "",
+                dataGovernanceHost: "",
+                dataServerSeconds: "",
+              },
+              environmentVariable: {
+                type: "Python",
+                "num-executors": "",
+                SPARK_HOME: "",
+                "executor-memory": "",
+                "executor-cores": "",
+              },
+            },
           },
           {
             id: "33",
@@ -93,6 +129,24 @@ export default {
             ico: "el-icon-shopping-cart-full",
             // 自定义覆盖样式
             style: {},
+            childDataSourceId: "23",
+            attr: {
+              algorithmParam: {
+                jobName: "",
+                launcherHost: "",
+                jobId: "",
+                ruleId: "",
+                dataGovernanceHost: "",
+                dataServerSeconds: "",
+              },
+              environmentVariable: {
+                type: "Spark",
+                "num-executors": "",
+                SPARK_HOME: "",
+                "executor-memory": "",
+                "executor-cores": "",
+              },
+            },
           },
           {
             id: "34",
