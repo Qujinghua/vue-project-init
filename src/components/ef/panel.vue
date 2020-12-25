@@ -97,13 +97,13 @@
         "
       >
         <flow-node-form
-          v-show="activeElement.type == 'line'"
+          v-show="activeElement.type === 'line'"
           ref="nodeForm"
           @setLineLabel="setLineLabel"
           @repaintEverything="repaintEverything"
         ></flow-node-form>
         <node-form-model
-          v-show="activeElement.type == 'node'"
+          v-show="activeElement.type === 'node'"
           ref="nodeFormModel"
           @setLineLabel="setLineLabel"
           @repaintEverything="repaintEverything"
@@ -249,13 +249,15 @@ export default {
         this.jsPlumb.bind("click", (conn, originalEvent) => {
           console.log(originalEvent);
           this.activeElement.type = "line";
-          this.rightSideShow = true;
           this.activeElement.sourceId = conn.sourceId;
           this.activeElement.targetId = conn.targetId;
-          this.$refs.nodeForm.lineInit({
-            from: conn.sourceId,
-            to: conn.targetId,
-            label: conn.getLabel(),
+          this.rightSideShow = true;
+          this.$nextTick(() => {
+            this.$refs.nodeForm.lineInit({
+              from: conn.sourceId,
+              to: conn.targetId,
+              label: conn.getLabel(),
+            });
           });
         });
         // 双击连线

@@ -3,51 +3,41 @@
     <div class="ef-node-form">
       <div class="ef-node-form-header">编辑</div>
       <div class="ef-node-form-body">
-        <el-form
-          :model="node"
-          ref="dataForm"
-          label-width="80px"
-          v-show="type === 'node'"
-        >
-          <!-- <el-form-item label="类型">
-            <el-input v-model="node.type" :disabled="true"></el-input>
-          </el-form-item> -->
-          <el-form-item label="名称">
-            <el-input v-model="node.name"></el-input>
-          </el-form-item>
-          <el-form-item label="left坐标">
-            <el-input v-model="node.left" :disabled="true"></el-input>
-          </el-form-item>
-          <el-form-item label="top坐标">
-            <el-input v-model="node.top" :disabled="true"></el-input>
-          </el-form-item>
-          <!-- <el-form-item label="ico图标">
-            <el-input v-model="node.ico"></el-input>
-          </el-form-item> -->
-          <el-form-item>
-            <!-- <el-button icon="el-icon-close">重置</el-button> -->
+        <div class="ef-node-form-body-node" v-show="type === 'node'">
+          <el-form :model="node" ref="dataForm" label-width="80px">
+            <el-form-item label="名称">
+              <el-input v-model="node.name" size="mini"></el-input>
+            </el-form-item>
+            <el-form-item label="left坐标">
+              <el-input
+                v-model="node.left"
+                :disabled="true"
+                size="mini"
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="top坐标">
+              <el-input
+                v-model="node.top"
+                :disabled="true"
+                size="mini"
+              ></el-input>
+            </el-form-item>
+          </el-form>
+          <div class="form-btn">
             <el-button type="primary" @click="save">保存</el-button>
-          </el-form-item>
-        </el-form>
-
-        <el-form
-          :model="line"
-          ref="dataForm"
-          label-width="80px"
-          v-show="type === 'line'"
-        >
-          <el-form-item label="条件">
-            <el-input v-model="line.label"></el-input>
-          </el-form-item>
-          <el-form-item>
-            <!-- <el-button icon="el-icon-close">重置</el-button> -->
-            <el-button type="primary" icon="el-icon-check" @click="saveLine"
-              >保存</el-button
-            >
-          </el-form-item>
-        </el-form>
+          </div>
+        </div>
+        <div class="ef-node-form-body-line" v-show="type === 'line'">
+          <el-form :model="line" ref="dataForm" label-width="80px">
+            <el-form-item label="条件">
+              <el-input v-model="line.label" size="mini"></el-input>
+            </el-form-item>
+          </el-form>
+          <div class="form-btn">
+            <el-button type="primary" @click="saveLine">保存</el-button>
+          </div>
+        </div>
       </div>
-      <!--            <div class="el-node-form-tag"></div>-->
     </div>
   </div>
 </template>
@@ -104,7 +94,13 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+.ef-node-form {
+  .form-btn {
+    margin-top: 30px;
+    margin-left: 80px;
+  }
+}
 .el-node-form-tag {
   position: absolute;
   top: 50%;
