@@ -115,9 +115,9 @@
 .ef-node-text {
     color: #565758;
     font-size: 12px;
-    /* line-height: 32px; */
-    /* margin-left: 8px; */
-    width: 100%;
+    position: absolute;
+    top: -30px;
+    // width: 100%;
     /* 设置超出宽度文本显示方式*/
     white-space: nowrap;
     overflow: hidden;
@@ -156,10 +156,11 @@
 }
 
 .node-start {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    line-height: 60px;
+    background-color: #1FB04F;
+    line-height: 30px;
     text-align: center;
 }
 .node-judge {
@@ -171,7 +172,7 @@
     -moz-transform:rotate(45deg); 	/* Firefox */
     -webkit-transform:rotate(45deg); /* Safari 和 Chrome */
     -o-transform:rotate(45deg); 	/* Opera */
-    line-height: 60px;
+    line-height: 30px;
     text-align: center;
     .ef-node-text {
         transform:rotate(-45deg);
@@ -179,32 +180,39 @@
         -moz-transform:rotate(-45deg); 	/* Firefox */
         -webkit-transform:rotate(-45deg); /* Safari 和 Chrome */
         -o-transform:rotate(-45deg); 	/* Opera */
+        left: -30px;
     }
 }
 .node-end {
-    width: 100px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    line-height: 60px;
+    background-color: #176184;
+    line-height: 30px;
     text-align: center;
 }
 .node-dataSource {
     width: 80px;
-    height: 60px;
-    line-height: 60px;
+    height: 80px;
+    line-height: 30px;
     text-align: center;
-}
-.node-dataSource {
-    width: 80px;
-    height: 60px;
-    line-height: 60px;
-    text-align: center;
+    border-color: #fff;
+    background-image: url(./images/source.png);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
 }
 .node-basicModel {
-    width: 100px;
+    width: 80px;
     height: 80px;
-    line-height: 80px;
+    line-height: 30px;
     text-align: center;
+    border-color: #fff;
+    background-image: url(./images/model.png);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+.node-basicModel.ef-node-active {
+    border-color: #1879FF;
 }
 
 /*节点右侧的图标*/

@@ -20,7 +20,9 @@
           <li
             v-for="subMenu in menu.children"
             class="ef-node-menu-li"
+            :class="'ef-node-menu-li-' + subMenu.type"
             :key="subMenu.id"
+            :id="subMenu.id"
             :type="subMenu.type"
           >
             <i :class="subMenu.ico"></i> {{ subMenu.name }}
@@ -39,6 +41,10 @@ var mousePosition = {
 };
 
 export default {
+  props: {
+    dataSourceNode: Array,
+    baseModelNode: Array,
+  },
   data() {
     return {
       activeNames: "1",
@@ -98,35 +104,7 @@ export default {
           name: "数据源",
           ico: "el-icon-video-pause",
           open: true,
-          children: [
-            {
-              id: "21",
-              type: "dataSource",
-              nodeType: "dataSource",
-              name: "数据源1",
-              ico: "el-icon-tickets",
-              // 自定义覆盖样式
-              style: {},
-            },
-            {
-              id: "22",
-              type: "dataSource",
-              nodeType: "dataSource",
-              name: "数据源2",
-              ico: "el-icon-tickets",
-              // 自定义覆盖样式
-              style: {},
-            },
-            {
-              id: "23",
-              type: "dataSource",
-              nodeType: "dataSource",
-              name: "数据源3",
-              ico: "el-icon-tickets",
-              // 自定义覆盖样式
-              style: {},
-            },
-          ],
+          children: [],
         },
         {
           id: "3",
@@ -164,9 +142,61 @@ export default {
             },
           ],
         },
+        {
+          id: "4",
+          type: "group",
+          name: "运行环境",
+          ico: "el-icon-video-pause",
+          open: true,
+          children: [
+            {
+              id: "41",
+              type: "functionLanguage",
+              nodeType: "functionLanguage",
+              name: "Java",
+              ico: "el-icon-shopping-cart-full",
+              // 自定义覆盖样式
+              style: {},
+            },
+            {
+              id: "42",
+              type: "functionLanguage",
+              nodeType: "functionLanguage",
+              name: "Python",
+              ico: "el-icon-shopping-cart-full",
+              // 自定义覆盖样式
+              style: {},
+            },
+            {
+              id: "43",
+              type: "functionLanguage",
+              nodeType: "functionLanguage",
+              name: "Spark",
+              ico: "el-icon-shopping-cart-full",
+              // 自定义覆盖样式
+              style: {},
+            },
+          ],
+        },
       ],
       nodeMenu: {},
     };
+  },
+  watch: {
+    dataSourceNode: {
+      handler(val) {
+        this.menuList[1].children = val;
+      },
+      deep: true,
+      immediate: true,
+    },
+    baseModelNode: {
+      handler(val) {
+        this.menuList[2].children = val;
+      },
+      deep: true,
+      immediate: true,
+    },
   },
   components: {
     draggable,
@@ -188,11 +218,11 @@ export default {
   },
   methods: {
     // 根据类型获取左侧菜单对象
-    getMenuByType(type) {
+    getMenuByType(id) {
       for (let i = 0; i < this.menuList.length; i++) {
         let children = this.menuList[i].children;
         for (let j = 0; j < children.length; j++) {
-          if (children[j].type === type) {
+          if (children[j].id === id) {
             return children[j];
           }
         }
@@ -201,8 +231,9 @@ export default {
     // 拖拽开始时触发
     move(evt, a, b, c) {
       console.log(a, b, c);
-      var type = evt.item.attributes.type.nodeValue;
-      this.nodeMenu = this.getMenuByType(type);
+      var id = evt.item.attributes.id.nodeValue;
+      this.nodeMenu = this.getMenuByType(id);
+      console.log("12", evt);
     },
     // 拖拽结束时触发
     end(evt, e) {

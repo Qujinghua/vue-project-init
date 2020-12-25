@@ -59,7 +59,12 @@
     </el-row>
     <div style="display: flex; height: calc(100% - 47px)">
       <div style="width: 230px; border-right: 1px solid #dce3e8">
-        <node-menu @addNode="addNode" ref="nodeMenu"></node-menu>
+        <node-menu
+          @addNode="addNode"
+          ref="nodeMenu"
+          :dataSourceNode="dataSourceNode"
+          :baseModelNode="baseModelNode"
+        ></node-menu>
       </div>
       <div id="efContainer" ref="efContainer" class="container" v-flowDrag>
         <template v-for="node in data.nodeList">
@@ -124,6 +129,10 @@ import NodeFormDialog from "./node_form_dialog";
 import lodash from "lodash";
 
 export default {
+  props: {
+    dataSourceNode: Array,
+    baseModelNode: Array,
+  },
   data() {
     return {
       // jsPlumb 实例
@@ -165,8 +174,7 @@ export default {
   },
   directives: {
     flowDrag: {
-      bind(el, binding, vnode, oldNode) {
-        console.log(vnode, oldNode);
+      bind(el, binding, vnode) {
         let self = vnode.context;
         if (!binding) {
           return;
@@ -412,7 +420,7 @@ export default {
      * @param mousePosition 鼠标拖拽结束的坐标
      */
     addNode(evt, nodeMenu, mousePosition) {
-      console.log(nodeMenu, mousePosition);
+      console.log("dsadas", nodeMenu, mousePosition);
       var screenX = evt.originalEvent.clientX,
         screenY = evt.originalEvent.clientY;
       let efContainer = this.$refs.efContainer;
@@ -434,29 +442,32 @@ export default {
       // 居中
       left -= 85;
       top -= 16;
+      var trueNodeId = nodeMenu.id;
       var nodeId = this.getUUID();
       // 动态生成名字
-      var origName = nodeMenu.name;
-      var nodeName = origName;
-      var index = 1;
-      while (index < 10000) {
-        var repeat = false;
-        for (var i = 0; i < this.data.nodeList.length; i++) {
-          let node = this.data.nodeList[i];
-          if (node.name === nodeName) {
-            nodeName = origName + index;
-            repeat = true;
-          }
-        }
-        if (repeat) {
-          index++;
-          continue;
-        }
-        break;
-      }
+      // var origName = nodeMenu.name;
+      // var nodeName = origName;
+      // var index = 1;
+      // while (index < 10000) {
+      //   var repeat = false;
+      //   for (var i = 0; i < this.data.nodeList.length; i++) {
+      //     let node = this.data.nodeList[i];
+      //     if (node.name === nodeName) {
+      //       nodeName = origName + index;
+      //       repeat = true;
+      //     }
+      //   }
+      //   if (repeat) {
+      //     index++;
+      //     continue;
+      //   }
+      //   break;
+      // }
       var node = {
         id: nodeId,
-        name: nodeName,
+        trueId: trueNodeId,
+        // name: nodeName,
+        name: nodeMenu.name,
         type: nodeMenu.type,
         nodeType: nodeMenu.nodeType,
         left: left + "px",
@@ -485,7 +496,14 @@ export default {
      * @param nodeId 被删除节点的ID
      */
     deleteNode(nodeId) {
-      this.$confirm("确定要删除节点" + nodeId + "?", "提示", {
+      console.log(this.activeElement, this.data);
+      let delNodeName = "";
+      this.data.nodeList.filter((node) => {
+        if (node.id === nodeId) {
+          delNodeName = node.name;
+        }
+      });
+      this.$confirm("确定要删除节点 “" + delNodeName + "” ?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
