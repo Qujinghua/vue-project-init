@@ -62,6 +62,7 @@ export default {
       visible: false,
       // node 或 line
       type: "node",
+      node: {},
       nodeModelAttr: {
         algorithmParam: {},
         environmentVariable: {},
@@ -84,6 +85,7 @@ export default {
       data.nodeList.filter((node) => {
         if (node.id === id) {
           this.nodeModelAttr = cloneDeep(node.attr);
+          this.node = cloneDeep(node);
         }
       });
       console.log(data, id, this.nodeModelAttr);
@@ -108,11 +110,9 @@ export default {
     save() {
       this.data.nodeList.filter((node) => {
         if (node.id === this.node.id) {
-          node.name = this.node.name;
-          node.left = this.node.left;
-          node.top = this.node.top;
-          node.ico = this.node.ico;
+          node.attr = { ...this.nodeModelAttr };
           this.$emit("repaintEverything");
+          this.$message.success("保存成功");
         }
       });
     },
