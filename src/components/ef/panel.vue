@@ -224,6 +224,7 @@ export default {
   },
   mounted() {
     this.jsPlumb = jsPlumb.getInstance();
+    this.backEvent();
     // this.$nextTick(() => {
     // 默认加载流程A的数据、在这里可以根据具体的业务返回符合流程数据格式的数据即可
     //   this.dataReload(getDataB());
@@ -232,6 +233,14 @@ export default {
   methods: {
     initData(params) {
       this.dataReload(params);
+    },
+    backEvent() {
+      document.addEventListener("keyup", (event) => {
+        const keyName = event.key;
+        if (keyName === "Delete" && this.activeElement.type) {
+          this.deleteElement();
+        }
+      });
     },
     // 返回唯一标识
     getUUID() {
