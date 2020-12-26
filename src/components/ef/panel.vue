@@ -168,6 +168,7 @@ export default {
       },
       zoom: 0.5,
       rightSideShow: false, // 右侧菜单是否显示
+      confirmModelShow: false, // 删除弹窗
     };
   },
   // 一些基础配置移动该文件中
@@ -237,14 +238,18 @@ export default {
     backEvent() {
       document.addEventListener("keyup", (event) => {
         const keyName = event.key;
-        if (keyName === "Delete" && this.activeElement.type) {
+        if (
+          keyName === "Delete" &&
+          this.activeElement.type &&
+          !this.confirmModelShow
+        ) {
           this.deleteElement();
         }
       });
     },
     // 返回唯一标识
-    getUUID() {
-      return Math.random().toString(36).substr(3, 10);
+    getUUID(trueId) {
+      return trueId + "_" + Math.random().toString(36).substr(3, 10);
     },
     jsPlumbInit() {
       this.jsPlumb.ready(() => {
@@ -256,18 +261,22 @@ export default {
         this.loadEasyFlow();
         // 单点击了连接线, https://www.cnblogs.com/ysx215/p/7615677.html
         this.jsPlumb.bind("click", (conn, originalEvent) => {
-          console.log(originalEvent);
+          console.log(conn, originalEvent);
           this.activeElement.type = "line";
           this.activeElement.sourceId = conn.sourceId;
           this.activeElement.targetId = conn.targetId;
-          this.rightSideShow = true;
-          this.$nextTick(() => {
-            this.$refs.nodeForm.lineInit({
-              from: conn.sourceId,
-              to: conn.targetId,
-              label: conn.getLabel(),
+          if (conn.source.innerText === "判定") {
+            this.rightSideShow = true;
+            this.$nextTick(() => {
+              this.$refs.nodeForm.lineInit({
+                from: conn.sourceId,
+                to: conn.targetId,
+                label: conn.getLabel(),
+              });
             });
-          });
+          } else {
+            this.rightSideShow = false;
+          }
         });
         // 双击连线
         // this.jsPlumb.bind("dblclick", (conn, originalEvent) => {
@@ -394,6 +403,7 @@ export default {
     },
     // 删除激活的元素
     deleteElement() {
+      this.confirmModelShow = true;
       if (this.activeElement.type === "node") {
         this.deleteNode(this.activeElement.nodeId);
       } else if (this.activeElement.type === "line") {
@@ -408,8 +418,11 @@ export default {
               target: this.activeElement.targetId,
             })[0];
             this.jsPlumb.deleteConnection(conn);
+            this.confirmModelShow = false;
           })
-          .catch(() => {});
+          .catch(() => {
+            this.confirmModelShow = false;
+          });
       }
     },
     // 删除线
@@ -465,7 +478,7 @@ export default {
       left -= 85;
       top -= 16;
       var trueNodeId = nodeMenu.id;
-      var nodeId = this.getUUID();
+      var nodeId = this.getUUID(trueNodeId);
       // 动态生成名字
       // var origName = nodeMenu.name;
       // var nodeName = origName;
@@ -507,7 +520,7 @@ export default {
        */
       this.data.nodeList.push(node);
       let childNodeItem = {};
-      let childNodeId = this.getUUID();
+      let childNodeId = "";
       let childNode = {};
       if (node.nodeType == "basicModel") {
         childNodeItem = this.dataSourceNode.filter((el) => {
@@ -516,6 +529,7 @@ export default {
           }
         })[0];
         if (childNodeItem.id) {
+          childNodeId = this.getUUID(childNodeItem.id);
           childNode = {
             id: childNodeId,
             trueId: childNodeItem.id,
@@ -563,7 +577,6 @@ export default {
      * @param nodeId 被删除节点的ID
      */
     deleteNode(nodeId) {
-      console.log(this.activeElement, this.data);
       let delNodeName = "";
       this.data.nodeList.filter((node) => {
         if (node.id === nodeId) {
@@ -590,9 +603,12 @@ export default {
           });
           this.$nextTick(function () {
             this.jsPlumb.removeAllEndpoints(nodeId);
+            this.confirmModelShow = false;
           });
         })
-        .catch(() => {});
+        .catch(() => {
+          this.confirmModelShow = false;
+        });
       return true;
     },
     clickNode(node) {

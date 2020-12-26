@@ -233,7 +233,6 @@ export default {
       console.log(a, b, c);
       var id = evt.item.attributes.id.nodeValue;
       this.nodeMenu = this.getMenuByType(id);
-      console.log("12", evt);
     },
     // 拖拽结束时触发
     end(evt, e) {
