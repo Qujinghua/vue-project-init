@@ -4,38 +4,59 @@
       <!--顶部工具菜单-->
       <el-col :span="24">
         <div class="ef-tooltar">
-          <el-link type="primary" :underline="false">{{ data.name }}</el-link>
-          <el-divider direction="vertical"></el-divider>
-          <el-button
-            type="text"
-            icon="el-icon-delete"
-            size="large"
-            @click="deleteElement"
-            :disabled="!this.activeElement.type"
-          ></el-button>
-          <el-divider direction="vertical"></el-divider>
-          <el-button
-            type="text"
-            icon="el-icon-download"
-            size="large"
-            @click="downloadData"
-          ></el-button>
-          <el-divider direction="vertical"></el-divider>
-          <el-button
-            type="text"
-            icon="el-icon-plus"
-            size="large"
-            @click="zoomAdd"
-          ></el-button>
-          <el-divider direction="vertical"></el-divider>
-          <el-button
-            type="text"
-            icon="el-icon-minus"
-            size="large"
-            @click="zoomSub"
-          ></el-button>
-          <div style="float: right; margin-right: 5px">
+          <div class="ef-tooltar-left">
+            <!-- <el-link type="primary" :underline="false">{{ data.name }}</el-link>
+          <el-divider direction="vertical"></el-divider> -->
             <el-button
+              icon="el-icon-delete"
+              type="primary"
+              round
+              size="mini"
+              @click="deleteElement"
+              :disabled="!this.activeElement.type"
+              >删除</el-button
+            >
+            <!-- <el-divider direction="vertical"></el-divider>
+              <el-button
+                type="text"
+                icon="el-icon-download"
+                size="large"
+                @click="downloadData"
+              ></el-button>
+              <el-divider direction="vertical"></el-divider>
+              <el-button
+                type="text"
+                icon="el-icon-plus"
+                size="large"
+                @click="zoomAdd"
+              ></el-button>
+              <el-divider direction="vertical"></el-divider>
+              <el-button
+                type="text"
+                icon="el-icon-minus"
+                size="large"
+                @click="zoomSub"
+              ></el-button> -->
+          </div>
+
+          <div class="ef-tooltar-step">
+            <p>Step1.选择节点</p>
+            <p>Step2.编排节点</p>
+            <p>
+              Step3.
+              <el-button
+                type="primary"
+                round
+                icon="el-icon-connection"
+                @click="dataInfo"
+                size="mini"
+                >运行</el-button
+              >
+            </p>
+          </div>
+
+          <div class="ef-tooltar-right">
+            <!-- <el-button
               type="info"
               plain
               round
@@ -43,10 +64,9 @@
               @click="dataInfo"
               size="mini"
               >流程信息</el-button
-            >
+            > -->
             <el-button
               type="info"
-              plain
               round
               icon="el-icon-document"
               @click="openHelp"
@@ -652,10 +672,11 @@ export default {
     },
     // 流程数据信息
     dataInfo() {
-      this.flowInfoVisible = true;
-      this.$nextTick(function () {
-        this.$refs.flowInfo.init();
-      });
+      this.$emit("triggerPlay", this.data);
+      // this.flowInfoVisible = true;
+      // this.$nextTick(function () {
+      //   this.$refs.flowInfo.init();
+      // });
     },
     // 加载流程图
     dataReload(data) {

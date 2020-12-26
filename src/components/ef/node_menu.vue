@@ -10,6 +10,25 @@
         ></i
         >&nbsp;{{ menu.name }}</span
       >
+      <div
+        class="node-filter"
+        v-if="(menu.id === '2' || menu.id === '3') && menu.open"
+      >
+        <el-input
+          v-if="menu.id === '2'"
+          size="mini"
+          v-model="nodeFilterDataSource"
+          placeholder="请输入数据源名称"
+          @keyup.enter.native="nodeFilterDataSourceClick"
+        ></el-input>
+        <el-input
+          v-else
+          size="mini"
+          v-model="nodeFilterBaseModel"
+          placeholder="请输入基础模型名称"
+          @keyup.enter.native="nodeFilterBaseModelClick"
+        ></el-input>
+      </div>
       <ul v-show="menu.open" class="ef-node-menu-ul">
         <draggable
           @end="end"
@@ -61,6 +80,8 @@ export default {
       },
       // 默认打开的左侧菜单的id
       defaultOpeneds: ["1", "2"],
+      nodeFilterDataSource: "",
+      nodeFilterBaseModel: "",
       menuList: [
         {
           id: "1",
@@ -238,6 +259,24 @@ export default {
     end(evt, e) {
       console.log(e);
       this.$emit("addNode", evt, this.nodeMenu, mousePosition);
+    },
+    nodeFilterDataSourceClick() {
+      let showArr = [];
+      this.dataSourceNode.forEach((el) => {
+        if (el.name.includes(this.nodeFilterDataSource)) {
+          showArr.push(el);
+        }
+      });
+      this.menuList[1].children = showArr;
+    },
+    nodeFilterBaseModelClick() {
+      let showArr = [];
+      this.baseModelNode.forEach((el) => {
+        if (el.name.includes(this.nodeFilterBaseModel)) {
+          showArr.push(el);
+        }
+      });
+      this.menuList[2].children = showArr;
     },
     // 是否是火狐浏览器
     isFirefox() {

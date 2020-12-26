@@ -1,10 +1,18 @@
 <template>
-  <div>
+  <div class="play-model">
     <flow-panel
       ref="flowPanel"
       :dataSourceNode="dataSourceNode"
       :baseModelNode="baseModelNode"
+      @triggerPlay="triggerPlay"
     ></flow-panel>
+    <div class="play-model-log" v-if="modelLogShow">
+      <div class="play-model-log-close" @click="closeModelLog">
+        <i class="el-icon-circle-close"></i>
+      </div>
+      <p class="play-model-log-title">运行日志</p>
+      <div class="play-model-log-content">这是运行日志</div>
+    </div>
   </div>
 </template>
 <script>
@@ -18,6 +26,7 @@ export default {
     return {
       dataSourceNode: [],
       baseModelNode: [],
+      modelLogShow: false,
     };
   },
   mounted() {
@@ -26,6 +35,12 @@ export default {
     this.getBaseModelNode();
   },
   methods: {
+    triggerPlay(data) {
+      console.log(data);
+      setTimeout(() => {
+        this.modelLogShow = true;
+      }, 1000);
+    },
     getData() {
       setTimeout(() => {
         this.$refs.flowPanel.initData(mockData);
@@ -160,6 +175,35 @@ export default {
         ];
       }, 1000);
     },
+    closeModelLog() {
+      this.modelLogShow = false;
+    },
   },
 };
 </script>
+<style lang="scss" scoped>
+.play-model {
+  position: relative;
+  &-log {
+    position: absolute;
+    top: 500px;
+    left: 230px;
+    width: calc(100% - 230px);
+    height: 435px;
+    overflow: auto;
+    border: 1px solid #dadce0;
+    background-color: #f0f2f5;
+    &-close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      line-height: 40px;
+      cursor: pointer;
+      color: #409eff;
+    }
+  }
+}
+</style>

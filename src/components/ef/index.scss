@@ -7,12 +7,35 @@
 
 /*顶部工具栏*/
 .ef-tooltar {
-    padding-left: 10px;
+    padding: 0px 10px;
     box-sizing: border-box;
     height: 42px;
-    line-height: 42px;
+    line-height: 38px;
     z-index: 3;
     border-bottom: 1px solid #DADCE0;
+    display: flex;
+    justify-content: space-between;
+    .ef-tooltar-step {
+        display: flex;
+        justify-content: space-between;
+        p {
+            margin: 0;
+            &:nth-child(1), &:nth-child(2) {
+                margin-right: 150px;
+                position: relative;
+                &::before {
+                    position: absolute;
+                    top: 20px;
+                    left: 130px;
+                    display: block;
+                    content: '';
+                    width: 115px;
+                    height: 1px;
+                    background-color: #858484;
+                }
+            } 
+        }
+    }
 }
 
 .jtk-overlay {
@@ -37,6 +60,18 @@
     background-color: #E0E0E0;
 }
 
+.node-filter {
+    padding: 10px 20px 0px 20px;
+}
+
+.ef-node-menu-ul {
+    list-style: none;
+    margin: 10px;
+    padding-left: 10px;
+    height: 119px;
+    overflow: auto;
+}
+
 .ef-node-menu-li {
     color: #565758;
     width: 150px;
@@ -54,11 +89,6 @@
     border: 1px dashed #1879FF;
     border-left: 4px solid #1879FF;
     padding-left: 5px;
-}
-
-.ef-node-menu-ul {
-    list-style: none;
-    padding-left: 20px
 }
 
 /*节点的最外层容器*/
