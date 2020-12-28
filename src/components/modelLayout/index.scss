@@ -195,24 +195,32 @@
         text-align: center;
     }
     .node-judge {
-        width: 60px;
-        height: 60px;
-        border-radius: 0;
-        transform:rotate(45deg);
-        -ms-transform:rotate(45deg); 	/* IE 9 */
-        -moz-transform:rotate(45deg); 	/* Firefox */
-        -webkit-transform:rotate(45deg); /* Safari 和 Chrome */
-        -o-transform:rotate(45deg); 	/* Opera */
+        width: 80px;
+        height: 80px;
         line-height: 30px;
         text-align: center;
-        .ef-node-text {
-            transform:rotate(-45deg);
-            -ms-transform:rotate(-45deg); 	/* IE 9 */
-            -moz-transform:rotate(-45deg); 	/* Firefox */
-            -webkit-transform:rotate(-45deg); /* Safari 和 Chrome */
-            -o-transform:rotate(-45deg); 	/* Opera */
-            left: -30px;
-        }
+        border-color: #fff;
+        background-image: url(./images/diamond.png);
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        // width: 60px;
+        // height: 60px;
+        // border-radius: 0;
+        // transform:rotate(45deg);
+        // -ms-transform:rotate(45deg); 	/* IE 9 */
+        // -moz-transform:rotate(45deg); 	/* Firefox */
+        // -webkit-transform:rotate(45deg); /* Safari 和 Chrome */
+        // -o-transform:rotate(45deg); 	/* Opera */
+        // line-height: 30px;
+        // text-align: center;
+        // .ef-node-text {
+        //     transform:rotate(-45deg);
+        //     -ms-transform:rotate(-45deg); 	/* IE 9 */
+        //     -moz-transform:rotate(-45deg); 	/* Firefox */
+        //     -webkit-transform:rotate(-45deg); /* Safari 和 Chrome */
+        //     -o-transform:rotate(-45deg); 	/* Opera */
+        //     left: -30px;
+        // }
     }
     .node-end {
         width: 40px;

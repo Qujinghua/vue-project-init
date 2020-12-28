@@ -17,7 +17,7 @@ let mockData = {
             "type": "judge",
             "nodeType": "judge",
             "left": "402px",
-            "top": "341px",
+            "top": "331px",
             "ico": "el-icon-time",
             "state": "success"
         },
