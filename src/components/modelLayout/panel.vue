@@ -146,11 +146,11 @@
 import { jsPlumb } from "./jsplumb";
 // 使用修改后的jsplumb
 // import "./jsplumb";
-import { easyFlowMixin } from "@/components/ef/mixins";
-import flowNode from "@/components/ef/node";
-import nodeMenu from "@/components/ef/node_menu";
-import FlowInfo from "@/components/ef/info";
-import FlowHelp from "@/components/ef/help";
+import { easyFlowMixin } from "@/components/modelLayout/mixins";
+import flowNode from "@/components/modelLayout/node";
+import nodeMenu from "@/components/modelLayout/node_menu";
+import FlowInfo from "@/components/modelLayout/info";
+import FlowHelp from "@/components/modelLayout/help";
 import FlowNodeForm from "./node_form";
 import NodeFormDialog from "./node_form_dialog";
 import NodeFormModel from "./node_form_model";
@@ -742,7 +742,5 @@ export default {
 };
 </script>
 <style lang="scss">
-.right-menu {
-  position: absolute;
-}
+@import "./index.scss";
 </style>

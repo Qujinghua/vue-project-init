@@ -16,7 +16,7 @@
   </div>
 </template>
 <script>
-import FlowPanel from "@/components/ef/panel";
+import FlowPanel from "@/components/modelLayout/panel";
 import mockData from "./mockData";
 export default {
   components: {
@@ -183,6 +183,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .play-model {
+  background-color: #fff;
   position: relative;
   &-log {
     position: absolute;
