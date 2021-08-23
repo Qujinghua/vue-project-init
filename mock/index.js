@@ -5,16 +5,16 @@ let loginData = {
     name: "admin123",
   },
   token: "admin",
-  code: 1000,
+  code: 200,
 };
 
-Mock.mock("/user/login", "post", loginData); // 根据数据模板生成模拟数据
+Mock.mock("/api/user/login", "post", loginData); // 根据数据模板生成模拟数据
 
 let logoutData = {
   data: {
     name: "admin123",
   },
   token: "admin",
-  code: 1000,
+  code: 200,
 };
-Mock.mock("/user/logout", "post", logoutData);
+Mock.mock("/api/user/logout", "post", logoutData);
