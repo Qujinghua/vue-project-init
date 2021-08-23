@@ -14,3 +14,19 @@ export function logout() {
     method: "post",
   });
 }
+
+export function sendCode(data) {
+  return request({
+    url: "/users/sendCode",
+    method: "post",
+    data
+  });
+}
+
+export function codePhoneLogin(data) {
+  return request({
+    url: "/users/codePhoneLogin",
+    method: "post",
+    data
+  });
+}
