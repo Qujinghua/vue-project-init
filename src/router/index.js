@@ -7,49 +7,49 @@ const routes = [
   {
     path: "/",
     name: "首页",
-    redirect: "/dashboard",
+    redirect: "/web-list",
     component: () => import("@/views/pages/index.vue"),
     children: [
+      // {
+      //   path: "/dashboard",
+      //   name: "仪表盘",
+      //   icon: "el-icon-s-data",
+      //   component: () => import("@/views/pages/dashboard/index.vue"),
+      // },
       {
-        path: "/dashboard",
-        name: "仪表板",
+        path: "/web-list",
+        name: "网站列表",
         icon: "el-icon-s-data",
-        component: () => import("@/views/pages/dashboard/index.vue"),
+        component: () => import("@/views/pages/web-list/index.vue"),
       },
       {
         path: "/basic-info",
-        name: "基础信息",
+        name: "系统管理",
         icon: "el-icon-s-operation",
         redirect: "/basic-info/system",
         component: () => import("@/views/pages/basic-info/index.vue"),
         children: [
           {
-            path: "/basic-info/system",
-            name: "系统信息",
-            component: () =>
-              import("@/views/pages/basic-info/system/index.vue"),
-          },
-          {
             path: "/basic-info/user",
-            name: "用户信息",
+            name: "网站管理员",
             component: () => import("@/views/pages/basic-info/user/index.vue"),
           },
         ],
       },
-      {
-        path: "/setup",
-        name: "设置",
-        icon: "el-icon-setting",
-        redirect: "/setup/system",
-        component: () => import("@/views/pages/setup/index.vue"),
-        children: [
-          {
-            path: "/setup/system",
-            name: "系统设置",
-            component: () => import("@/views/pages//setup/system/index.vue"),
-          },
-        ],
-      },
+      // {
+      //   path: "/setup",
+      //   name: "设置",
+      //   icon: "el-icon-setting",
+      //   redirect: "/setup/system",
+      //   component: () => import("@/views/pages/setup/index.vue"),
+      //   children: [
+      //     {
+      //       path: "/setup/system",
+      //       name: "系统设置",
+      //       component: () => import("@/views/pages//setup/system/index.vue"),
+      //     },
+      //   ],
+      // },
     ],
   },
   {

@@ -1,6 +1,10 @@
 <template>
   <el-container class="el-container">
-    <el-aside class="el-menu-vertical-demo" :collapse="isCollapse">
+    <el-aside
+      class="el-menu-vertical-demo"
+      :collapse="isCollapse"
+      style="width: 201px"
+    >
       <div class="breadcrumb-container">
         <el-menu
           :default-active="defaultActive"
@@ -8,6 +12,9 @@
           :class="{ 'el-menu-vertical-close': isCollapse }"
           router
           :collapse="isCollapse"
+          background-color="#545c64"
+          text-color="#fff"
+          active-text-color="#ffd04b"
         >
           <el-menu-item index="0" class="el-menu-logo">
             <a href="javascript:;">
@@ -59,8 +66,22 @@
     </el-aside>
     <el-container>
       <el-header class="el-header">
-        <div class="el-header-collapse" @click="collapseChange">
+        <!-- <div class="el-header-collapse" @click="collapseChange">
           <i class="el-icon-menu"></i>
+        </div> -->
+        <div class="el-header-breadcrumb">
+          <el-breadcrumb
+            v-if="lists.length > 1"
+            separator-class="el-icon-arrow-right"
+          >
+            <el-breadcrumb-item
+              v-for="item in lists"
+              :key="item.name"
+              :to="{ path: item.path }"
+            >
+              {{ item.name }}
+            </el-breadcrumb-item>
+          </el-breadcrumb>
         </div>
         <div class="el-header-right">
           <div class="el-header-right-user">
@@ -81,21 +102,7 @@
         </div>
       </el-header>
       <el-main class="el-main">
-        <div class="el-main-breadcrumb">
-          <el-breadcrumb
-            v-if="lists.length > 1"
-            separator-class="el-icon-arrow-right"
-          >
-            <el-breadcrumb-item
-              v-for="item in lists"
-              :key="item.name"
-              :to="{ path: item.path }"
-            >
-              {{ item.name }}
-            </el-breadcrumb-item>
-          </el-breadcrumb>
-        </div>
-        <div class="el-main-info">
+        <div class="el-main-content">
           <router-view />
         </div>
       </el-main>
@@ -188,7 +195,6 @@ export default {
   .el-header {
     display: flex;
     justify-content: space-between;
-    height: 56px;
     background: #fff;
     padding: 0;
     border-bottom: 1px solid #e6e6e6;
@@ -200,9 +206,17 @@ export default {
       width: 56px;
       border-right: 1px solid #e6e6e6;
     }
+    &-breadcrumb {
+      padding: 0 20px;
+      .el-breadcrumb {
+        height: 100%;
+        line-height: 60px;
+      }
+    }
     &-right {
       display: flex;
       align-items: center;
+      padding: 0 20px;
       &-user {
         width: 100px;
         text-align: center;
@@ -216,23 +230,12 @@ export default {
     }
   }
   .el-main {
-    padding-top: 24px;
     background-color: #f0f2f5;
-    &-breadcrumb {
-      height: 50px;
-      display: flex;
-      align-items: center;
+    &-content {
+      height: 100%;
       background-color: #fff;
-      padding-left: 24px;
-      .el-breadcrumb {
-        font-size: 14px;
-      }
-    }
-    &-info {
-      padding: 24px;
-      & > div {
-        background-color: #fff;
-      }
+      padding: 10px;
+      box-sizing: border-box;
     }
   }
 }
