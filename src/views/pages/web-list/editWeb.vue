@@ -76,7 +76,12 @@ export default {
         if (valid) {
           webListAdd(this.ruleForm)
             .then((data) => {
-              console.log(data);
+              this.$message({
+                type: "success",
+                message: data.msg,
+              });
+              this.handleClose();
+              this.$emit("refresh-list");
             })
             .catch((err) => {
               console.log(err);

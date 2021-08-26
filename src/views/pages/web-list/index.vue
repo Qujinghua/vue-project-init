@@ -25,20 +25,21 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-        :current-page="currentPage"
+        :current-page="searchParams.page"
         :page-sizes="[10, 20, 50, 100]"
-        :page-size="10"
+        :page-size="searchParams.size"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="40"
+        :total="total"
       >
       </el-pagination>
     </div>
-    <edit-web ref="editWeb"></edit-web>
+    <edit-web ref="editWeb" @refresh-list="getList"></edit-web>
   </div>
 </template>
 
 <script>
 import editWeb from "./editWeb.vue";
+import { webList } from "@/api/webList";
 export default {
   components: {
     editWeb,
@@ -46,36 +47,28 @@ export default {
   data() {
     return {
       currentPage: 1,
-      tableData: [
-        {
-          web_url: "www.baidu.com",
-          web_id: "1001",
-          create_time: "2021.8.25",
-          remarks: "描述",
-        },
-        {
-          web_url: "www.baidu.com",
-          web_id: "1001",
-          create_time: "2021.8.25",
-          remarks: "描述",
-        },
-        {
-          web_url: "www.baidu.com",
-          web_id: "1001",
-          create_time: "2021.8.25",
-          remarks: "描述",
-        },
-        {
-          web_url: "www.baidu.com",
-          web_id: "1001",
-          create_time: "2021.8.25",
-          remarks: "描述",
-        },
-      ],
+      searchParams: {
+        page: 1,
+        size: 10,
+      },
+      tableData: [],
+      total: 0,
     };
   },
-  mounted() {},
+  mounted() {
+    this.getList();
+  },
   methods: {
+    getList() {
+      webList(this.searchParams)
+        .then((data) => {
+          this.tableData = data.data.list;
+          this.total = data.data.total;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
     browseWeb(row) {
       window.open("http://" + row.web_url);
     },
@@ -83,10 +76,13 @@ export default {
       this.$refs.editWeb.init();
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      this.searchParams.page = 1;
+      this.searchParams.size = val;
+      this.getList();
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.searchParams.page = val;
+      this.getList();
     },
   },
 };
