@@ -35,6 +35,12 @@ const routes = [
         component: () => import("@/views/pages/main-img/index.vue"),
       },
       {
+        path: "/news-center",
+        name: "新闻中心",
+        icon: "el-icon-s-data",
+        component: () => import("@/views/pages/news-center/index.vue"),
+      },
+      {
         path: "/game-detail",
         name: "游戏详情",
         icon: "el-icon-s-data",
