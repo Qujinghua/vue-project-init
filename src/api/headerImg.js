@@ -1,16 +1,16 @@
 import request from "@/utils/request";
 
-export function webList(data) {
+export function headerImg(data) {
   return request({
-    url: "/web-list/list",
+    url: "/header-img/detail",
     method: "get",
     params: data,
   });
 }
 
-export function webListAdd(data) {
+export function headerListUpdate(data) {
   return request({
-    url: "/web-list/add",
+    url: "/header-img/update",
     method: "post",
     data,
   });

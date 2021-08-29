@@ -1,16 +1,16 @@
 import request from "@/utils/request";
 
-export function webList(data) {
+export function getFooterBar(data) {
   return request({
-    url: "/web-list/list",
+    url: "/footer-bar/detail",
     method: "get",
     params: data,
   });
 }
 
-export function webListAdd(data) {
+export function footerBarUpdate(data) {
   return request({
-    url: "/web-list/add",
+    url: "/footer-bar/update",
     method: "post",
     data,
   });

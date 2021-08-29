@@ -1,6 +1,7 @@
 <template>
   <div class="login-container">
     <el-form
+      v-if="showChoiceWeb == false"
       ref="loginForm"
       :model="loginForm"
       :rules="loginRules"
@@ -55,14 +56,32 @@
         :loading="loading"
         size="medium"
         type="primary"
-        style="width:100%;margin-bottom:30px;"
+        style="width: 100%; margin-bottom: 30px"
         @click.native.prevent="handleLogin"
-        >Login</el-button
+        >登录</el-button
       >
     </el-form>
+    <div class="choice-web" v-else>
+      <p>请选择要进入的网站后台</p>
+      <div class="web-list">
+        <div
+          class="list-item"
+          :class="{ active: item.id === nowSelectWeb.id }"
+          v-for="item in webListData"
+          :key="item.id"
+          @click="choiceWebItem(item)"
+        >
+          {{ item.web_url }}
+        </div>
+      </div>
+      <div class="handle-btn">
+        <el-button type="primary" @click="handleChoiceWeb">进入后台</el-button>
+      </div>
+    </div>
   </div>
 </template>
 <script>
+import { webList } from "@/api/webList";
 export default {
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -97,11 +116,14 @@ export default {
       loading: false,
       redirect: undefined,
       otherQuery: {},
+      webListData: [],
+      showChoiceWeb: false,
+      nowSelectWeb: {},
     };
   },
   watch: {
     $route: {
-      handler: function(route) {
+      handler: function (route) {
         const query = route.query;
         if (query) {
           this.redirect = query.redirect;
@@ -140,11 +162,12 @@ export default {
           this.$store
             .dispatch("user/login", this.loginForm)
             .then(() => {
-              this.$router.push({
-                path: this.redirect || "/",
-                query: this.otherQuery,
-              });
+              // this.$router.push({
+              //   path: this.redirect || "/",
+              //   query: this.otherQuery,
+              // });
               this.loading = false;
+              this.setIntoWeb();
             })
             .catch(() => {
               this.loading = false;
@@ -153,6 +176,42 @@ export default {
           console.log("error submit!!");
           return false;
         }
+      });
+    },
+    setIntoWeb() {
+      this.showChoiceWeb = true;
+      let params = {
+        page: 1,
+        size: 1000,
+      };
+      webList(params)
+        .then((data) => {
+          if (data.data.list.length) {
+            this.webListData = data.data.list;
+            data.data.list.length &&
+              (this.nowSelectWeb = { ...data.data.list[0] });
+            window.localStorage.setItem("web_id", this.nowSelectWeb.web_id);
+            window.localStorage.setItem("web_url", this.nowSelectWeb.web_url);
+          } else {
+            this.$router.push({
+              path: this.redirect || "/",
+              query: this.otherQuery,
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    choiceWebItem(item) {
+      this.nowSelectWeb = { ...item };
+    },
+    handleChoiceWeb() {
+      window.localStorage.setItem("web_id", this.nowSelectWeb.web_id);
+      window.localStorage.setItem("web_url", this.nowSelectWeb.web_url);
+      this.$router.push({
+        path: this.redirect || "/",
+        query: this.otherQuery,
       });
     },
     getOtherQuery(query) {
@@ -172,7 +231,8 @@ export default {
   min-height: 100%;
   background-color: #2d3a4b;
   position: relative;
-  .login-form {
+  .login-form,
+  .choice-web {
     position: absolute;
     top: 0;
     right: 0;
@@ -194,6 +254,41 @@ export default {
           padding-left: 30px;
         }
       }
+    }
+  }
+  .choice-web {
+    width: 700px;
+    height: 455px;
+    background-color: #fff;
+    border-radius: 3px;
+    & > p {
+      text-align: center;
+      font-size: 20px;
+    }
+    .web-list {
+      padding: 0 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .list-item {
+        width: calc(50% - 30px);
+        height: 40px;
+        border-radius: 3px;
+        line-height: 38px;
+        border: 1px solid #dcdfe6;
+        padding: 0 10px;
+        cursor: pointer;
+        margin-bottom: 20px;
+        &.active {
+          background-color: #409eff;
+          border: 1px solid #409eff;
+          color: #fff;
+        }
+      }
+    }
+    .handle-btn {
+      padding: 20px 0;
+      text-align: center;
     }
   }
 }

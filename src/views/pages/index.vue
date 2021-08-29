@@ -234,7 +234,7 @@ export default {
     &-content {
       height: 100%;
       background-color: #fff;
-      padding: 10px;
+      padding: 20px;
       box-sizing: border-box;
     }
   }

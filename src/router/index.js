@@ -23,6 +23,30 @@ const routes = [
         component: () => import("@/views/pages/web-list/index.vue"),
       },
       {
+        path: "/header-img",
+        name: "商标管理",
+        icon: "el-icon-s-data",
+        component: () => import("@/views/pages/header-img/index.vue"),
+      },
+      {
+        path: "/main-img",
+        name: "主图管理",
+        icon: "el-icon-s-data",
+        component: () => import("@/views/pages/main-img/index.vue"),
+      },
+      {
+        path: "/game-detail",
+        name: "游戏详情",
+        icon: "el-icon-s-data",
+        component: () => import("@/views/pages/game-detail/index.vue"),
+      },
+      {
+        path: "/footer-bar",
+        name: "底栏管理",
+        icon: "el-icon-s-data",
+        component: () => import("@/views/pages/footer-bar/index.vue"),
+      },
+      {
         path: "/basic-info",
         name: "系统管理",
         icon: "el-icon-s-operation",

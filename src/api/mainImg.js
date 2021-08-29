@@ -1,16 +1,16 @@
 import request from "@/utils/request";
 
-export function webList(data) {
+export function mainImg(data) {
   return request({
-    url: "/web-list/list",
+    url: "/main-img/detail",
     method: "get",
     params: data,
   });
 }
 
-export function webListAdd(data) {
+export function mainImgUpdate(data) {
   return request({
-    url: "/web-list/add",
+    url: "/main-img/update",
     method: "post",
     data,
   });
