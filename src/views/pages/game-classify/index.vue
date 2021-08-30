@@ -16,7 +16,11 @@
       <el-table :data="listData" stripe size="mini" style="width: 100%">
         <el-table-column prop="web_url" label="站点" width="200">
         </el-table-column>
-        <el-table-column prop="title" label="新闻标题" width="200">
+        <el-table-column prop="title" label="游戏标题" width="200">
+        </el-table-column>
+        <el-table-column prop="subtitle" label="副标题" width="200">
+        </el-table-column>
+        <el-table-column prop="subtitle" label="微信号" width="200">
         </el-table-column>
         <el-table-column prop="img_url" label="缩略图" width="200">
           <template slot-scope="scope">
@@ -26,7 +30,7 @@
             />
           </template>
         </el-table-column>
-        <el-table-column prop="content" label="内容" width="200">
+        <el-table-column prop="download_url" label="下载链接">
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
@@ -46,7 +50,7 @@
 
 <script>
 import editDrawer from "./editDrawer.vue";
-import { getNewsList } from "@/api/newsCenter";
+import { getGameList } from "@/api/gameClassify";
 export default {
   components: {
     editDrawer,
@@ -65,7 +69,7 @@ export default {
   },
   methods: {
     getList() {
-      getNewsList(this.searchParams)
+      getGameList(this.searchParams)
         .then((data) => {
           this.listData = data.data.list;
         })

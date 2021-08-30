@@ -50,7 +50,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')"
-            >立即创建</el-button
+            >保存</el-button
           >
         </el-form-item>
       </el-form>

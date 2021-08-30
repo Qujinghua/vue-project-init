@@ -81,7 +81,6 @@
   </div>
 </template>
 <script>
-import { webList } from "@/api/webList";
 export default {
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -169,8 +168,12 @@ export default {
               this.loading = false;
               this.setIntoWeb();
             })
-            .catch(() => {
+            .catch((err) => {
               this.loading = false;
+              this.$message({
+                type: "error",
+                message: err.msg,
+              });
             });
         } else {
           console.log("error submit!!");
@@ -184,12 +187,12 @@ export default {
         page: 1,
         size: 1000,
       };
-      webList(params)
-        .then((data) => {
-          if (data.data.list.length) {
-            this.webListData = data.data.list;
-            data.data.list.length &&
-              (this.nowSelectWeb = { ...data.data.list[0] });
+      this.$store
+        .dispatch("webList/setWebList", params)
+        .then(() => {
+          this.webListData = this.$store.getters.webListData;
+          if (this.webListData.length) {
+            this.nowSelectWeb = { ...this.webListData[0] };
             window.localStorage.setItem("web_id", this.nowSelectWeb.web_id);
             window.localStorage.setItem("web_url", this.nowSelectWeb.web_url);
           } else {
@@ -199,9 +202,7 @@ export default {
             });
           }
         })
-        .catch((err) => {
-          console.log(err);
-        });
+        .catch(() => {});
     },
     choiceWebItem(item) {
       this.nowSelectWeb = { ...item };

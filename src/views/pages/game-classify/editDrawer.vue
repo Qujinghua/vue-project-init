@@ -1,6 +1,6 @@
 <template>
   <el-drawer
-    :title="action == 'add' ? '新增新闻' : '编辑新闻'"
+    :title="action == 'add' ? '新增游戏' : '编辑游戏'"
     size="60%"
     custom-class="web-edit-drawer"
     :visible.sync="drawer"
@@ -15,10 +15,16 @@
         label-width="120px"
         class="demo-ruleForm"
       >
-        <el-form-item label="新闻标题" prop="title">
+        <el-form-item label="游戏标题" prop="title">
           <el-input v-model="ruleForm.title"></el-input>
         </el-form-item>
-        <el-form-item label="新闻缩略图" prop="img">
+        <el-form-item label="游戏副标题" prop="subtitle">
+          <el-input v-model="ruleForm.subtitle"></el-input>
+        </el-form-item>
+        <el-form-item label="微信号" prop="wechat">
+          <el-input v-model="ruleForm.wechat"></el-input>
+        </el-form-item>
+        <el-form-item label="游戏缩略图" prop="img">
           <el-upload
             ref="upload"
             :action="actionUrl"
@@ -40,17 +46,12 @@
             <img width="100%" :src="dialogImageUrl" alt="" />
           </el-dialog>
         </el-form-item>
-        <el-form-item label="新闻内容" prop="content">
-          <vue-editor
-            useCustomImageHandler
-            @image-added="handleImageAdded"
-            v-model="ruleForm.content"
-          >
-          </vue-editor>
+        <el-form-item label="游戏下载链接" prop="download_url">
+          <el-input v-model="ruleForm.download_url"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')"
-            >立即创建</el-button
+            >保存</el-button
           >
         </el-form-item>
       </el-form>
@@ -59,13 +60,8 @@
 </template>
 
 <script>
-import { VueEditor } from "vue2-editor";
-import { gameDetailImg } from "@/api/gameDetail";
-import { newsUpdate } from "@/api/newsCenter";
+import { gameClassifyUpdate } from "@/api/gameClassify";
 export default {
-  components: {
-    VueEditor,
-  },
   data() {
     return {
       drawer: false,
@@ -75,12 +71,22 @@ export default {
         web_url: "",
         web_id: "",
         title: "",
+        subtitle: "",
         img_url: "",
-        content: "",
+        download_url: "",
       },
       rules: {
         title: [
-          { required: true, message: "请输入新闻标题", trigger: "blur" },
+          { required: true, message: "请输入标题", trigger: "blur" },
+          {
+            min: 1,
+            max: 255,
+            message: "长度在 1 到 255 个字符",
+            trigger: "blur",
+          },
+        ],
+        subtitle: [
+          { required: true, message: "请输入副标题", trigger: "blur" },
           {
             min: 1,
             max: 255,
@@ -98,8 +104,8 @@ export default {
   computed: {
     actionUrl() {
       return this.action == "add"
-        ? "/api/news-center/add"
-        : "/api/news-center/update";
+        ? "/api/game-classify/add"
+        : "/api/game-classify/update";
     },
   },
   methods: {
@@ -114,22 +120,6 @@ export default {
       this.ruleForm.web_id = window.localStorage.getItem("web_id");
       this.drawer = true;
     },
-    handleImageAdded: function (file, Editor, cursorLocation, resetUploader) {
-      // An example of using FormData
-      // NOTE: Your key could be different such as:
-      // formData.append('file', file)
-      let formData = new FormData();
-      formData.append("file", file);
-      gameDetailImg(formData)
-        .then((data) => {
-          const url = data.data.imgUrl; // Get url from response
-          Editor.insertEmbed(cursorLocation, "image", url);
-          resetUploader();
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
@@ -140,7 +130,7 @@ export default {
               if (this.fileList[0].raw) {
                 this.$refs.upload.submit();
               } else {
-                newsUpdate(this.ruleForm)
+                gameClassifyUpdate(this.ruleForm)
                   .then(() => {
                     this.$message({
                       type: "success",
@@ -198,8 +188,9 @@ export default {
         web_url: "",
         web_id: "",
         title: "",
+        subtitle: "",
         img_url: "",
-        content: "",
+        download_url: "",
       };
       this.$refs.upload.clearFiles();
       this.fileList = [];

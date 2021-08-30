@@ -67,7 +67,7 @@ const routes = [
         children: [
           {
             path: "/basic-info/user",
-            name: "网站管理员",
+            name: "管理员",
             component: () => import("@/views/pages/basic-info/user/index.vue"),
           },
         ],

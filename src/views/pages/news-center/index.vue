@@ -26,7 +26,15 @@
             />
           </template>
         </el-table-column>
-        <el-table-column prop="content" label="内容" width="200">
+        <el-table-column prop="content" label="内容">
+          <template slot-scope="scope">
+            <span
+              v-html="scope.row.content"
+              style="max-width: 50px; max-height: 50px"
+            >
+              {{ scope.row.content }}
+            </span>
+          </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">

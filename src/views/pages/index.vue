@@ -83,12 +83,29 @@
             </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
+        <div class="el-header-middle">
+          <p>切换站点后台：</p>
+          <el-select
+            v-model="selectWebUrl"
+            placeholder="请选择"
+            size="small"
+            @change="selectChange"
+          >
+            <el-option
+              v-for="item in webListData"
+              :key="item.web_id"
+              :label="item.web_url"
+              :value="item.web_url"
+            >
+            </el-option>
+          </el-select>
+        </div>
         <div class="el-header-right">
           <div class="el-header-right-user">
             <el-dropdown>
               <el-link type="text" :underline="false">
                 <i class="el-icon-user-solid"></i>
-                <span>{{ userInfo.name || userName }}</span>
+                <span>{{ userInfo.username || userName }}</span>
               </el-link>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item @click.native="logout">
@@ -134,10 +151,18 @@ export default {
   data() {
     return {
       isCollapse: false,
+      selectWebUrl: window.localStorage.getItem("web_url"),
     };
   },
+  mounted() {
+    let params = {
+      page: 1,
+      size: 1000,
+    };
+    this.$store.dispatch("webList/setWebList", params);
+  },
   computed: {
-    ...mapGetters(["userInfo"]),
+    ...mapGetters(["userInfo", "webListData"]),
     defaultActive() {
       return this.$route.path;
     },
@@ -150,7 +175,7 @@ export default {
       return generateRoutes(this.$router.options.routes[0].children);
     },
     userName() {
-      return window.localStorage.getItem("name");
+      return window.localStorage.getItem("username");
     },
     lists() {
       const routers = this.$route.matched.map((_) => {
@@ -167,6 +192,14 @@ export default {
   methods: {
     collapseChange() {
       this.isCollapse = !this.isCollapse;
+    },
+    selectChange() {
+      let selectObj = this.webListData.filter(
+        (el) => el.web_url == this.selectWebUrl
+      )[0];
+      window.localStorage.setItem("web_url", selectObj.web_url);
+      window.localStorage.setItem("web_id", selectObj.web_id);
+      this.$router.go(0);
     },
     async logout() {
       await this.$store.dispatch("user/logout");
@@ -212,6 +245,14 @@ export default {
         height: 100%;
         line-height: 60px;
       }
+    }
+    &-middle {
+      & p {
+        color: #409eff;
+        font-size: 14px;
+      }
+      display: flex;
+      align-items: center;
     }
     &-right {
       display: flex;
