@@ -72,6 +72,7 @@ export default {
         web_id: "",
         title: "",
         subtitle: "",
+        wechat: "",
         img_url: "",
         download_url: "",
       },
@@ -189,6 +190,7 @@ export default {
         web_id: "",
         title: "",
         subtitle: "",
+        wechat: "",
         img_url: "",
         download_url: "",
       };
