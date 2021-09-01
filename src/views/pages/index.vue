@@ -17,10 +17,7 @@
           active-text-color="#ffd04b"
         >
           <el-menu-item index="0" class="el-menu-logo">
-            <a href="javascript:;">
-              <!-- <img :src="logo" /> -->
-              LOGO
-            </a>
+            <img :src="logo" style="margin-left: 20px" />
           </el-menu-item>
           <div
             class="breadcrumb-container-menu"
@@ -129,6 +126,7 @@
 
 <script>
 import { mapGetters } from "vuex";
+import menu_logo from "@/assets/menu_logo.png";
 function generateRoutes(routes) {
   let res = [];
   for (const router of routes) {
@@ -167,9 +165,10 @@ export default {
       return this.$route.path;
     },
     logo() {
-      return this.isCollapse
-        ? "../../assets/logo.png"
-        : "../../assets/logo.png";
+      return menu_logo;
+      // return this.isCollapse
+      //   ? "../../assets/logo.png"
+      //   : "../../assets/logo.png";
     },
     menuLists() {
       return generateRoutes(this.$router.options.routes[0].children);
@@ -259,7 +258,6 @@ export default {
       align-items: center;
       padding: 0 20px;
       &-user {
-        width: 100px;
         text-align: center;
         .el-link--inner {
           i {

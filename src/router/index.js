@@ -7,7 +7,7 @@ const routes = [
   {
     path: "/",
     name: "首页",
-    redirect: "/web-list",
+    redirect: "/header-img",
     component: () => import("@/views/pages/index.vue"),
     children: [
       // {
@@ -16,12 +16,6 @@ const routes = [
       //   icon: "el-icon-s-data",
       //   component: () => import("@/views/pages/dashboard/index.vue"),
       // },
-      {
-        path: "/web-list",
-        name: "网站列表",
-        icon: "el-icon-more",
-        component: () => import("@/views/pages/web-list/index.vue"),
-      },
       {
         path: "/header-img",
         name: "商标管理",
@@ -95,6 +89,17 @@ const routes = [
     hidden: true,
   },
 ];
+
+if (window.localStorage.getItem('username') === 'super_top_admin') {
+  routes[0].children.unshift(
+    {
+      path: "/web-list",
+      name: "网站列表",
+      icon: "el-icon-more",
+      component: () => import("@/views/pages/web-list/index.vue"),
+    }
+  )
+}
 
 const router = new VueRouter({
   routes,
