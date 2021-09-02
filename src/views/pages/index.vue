@@ -272,6 +272,7 @@ export default {
     background-color: #f0f2f5;
     &-content {
       height: 100%;
+      overflow: auto;
       background-color: #fff;
       padding: 20px;
       box-sizing: border-box;

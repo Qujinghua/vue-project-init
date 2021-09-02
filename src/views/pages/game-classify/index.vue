@@ -20,7 +20,7 @@
         </el-table-column>
         <el-table-column prop="subtitle" label="副标题" width="200">
         </el-table-column>
-        <el-table-column prop="subtitle" label="微信号" width="200">
+        <el-table-column prop="wechat" label="微信号" width="200">
         </el-table-column>
         <el-table-column prop="img_url" label="缩略图" width="200">
           <template slot-scope="scope">

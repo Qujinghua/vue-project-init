@@ -28,12 +28,12 @@
         </el-table-column>
         <el-table-column prop="content" label="内容">
           <template slot-scope="scope">
-            <span
-              v-html="scope.row.content"
-              style="max-width: 50px; max-height: 50px"
+            <el-button
+              type="text"
+              size="small"
+              @click="editDrawerBtn(scope.row, 'detail')"
+              >查看</el-button
             >
-              {{ scope.row.content }}
-            </span>
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
@@ -41,7 +41,7 @@
             <el-button
               type="text"
               size="small"
-              @click="editDrawerBtn(scope.row)"
+              @click="editDrawerBtn(scope.row, 'edit')"
               >编辑</el-button
             >
           </template>
@@ -84,8 +84,8 @@ export default {
     addWeb() {
       this.$refs.editWeb.init("add");
     },
-    editDrawerBtn(row) {
-      this.$refs.editWeb.init("edit", row);
+    editDrawerBtn(row, operation) {
+      this.$refs.editWeb.init("edit", row, operation);
     },
   },
 };

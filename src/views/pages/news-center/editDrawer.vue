@@ -49,7 +49,10 @@
           </vue-editor>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('ruleForm')"
+          <el-button
+            type="primary"
+            :disabled="nowDrawerStatus == 'detail'"
+            @click="submitForm('ruleForm')"
             >保存</el-button
           >
         </el-form-item>
@@ -93,6 +96,7 @@ export default {
       headerImgData: {},
       dialogImageUrl: "",
       dialogVisible: false,
+      nowDrawerStatus: "detail",
     };
   },
   computed: {
@@ -103,9 +107,8 @@ export default {
     },
   },
   methods: {
-    init(action, row) {
+    init(action, row, operation) {
       this.action = action;
-      console.log(row);
       if (action == "edit") {
         this.ruleForm = { ...row };
         row.img_url && this.fileList.push({ url: row.img_url });
@@ -113,6 +116,7 @@ export default {
       this.ruleForm.web_url = window.localStorage.getItem("web_url");
       this.ruleForm.web_id = window.localStorage.getItem("web_id");
       this.drawer = true;
+      this.nowDrawerStatus = operation;
     },
     handleImageAdded: function (file, Editor, cursorLocation, resetUploader) {
       // An example of using FormData
