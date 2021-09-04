@@ -23,3 +23,11 @@ export function newsUpdate(data) {
     data,
   });
 }
+
+export function newsDel(data) {
+  return request({
+    url: "/news-center/del",
+    method: "post",
+    data,
+  });
+}

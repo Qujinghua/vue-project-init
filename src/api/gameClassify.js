@@ -23,3 +23,11 @@ export function gameClassifyUpdate(data) {
     data,
   });
 }
+
+export function gameDel(data) {
+  return request({
+    url: "/game-classify/del",
+    method: "post",
+    data,
+  });
+}

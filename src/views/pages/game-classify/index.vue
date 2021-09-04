@@ -14,15 +14,11 @@
     </div>
     <div class="content-table">
       <el-table :data="listData" stripe size="mini" style="width: 100%">
-        <el-table-column prop="web_url" label="站点" width="200">
-        </el-table-column>
-        <el-table-column prop="title" label="游戏标题" width="200">
-        </el-table-column>
-        <el-table-column prop="subtitle" label="副标题" width="200">
-        </el-table-column>
-        <el-table-column prop="wechat" label="微信号" width="200">
-        </el-table-column>
-        <el-table-column prop="img_url" label="缩略图" width="200">
+        <el-table-column prop="web_url" label="站点"> </el-table-column>
+        <el-table-column prop="title" label="游戏标题"> </el-table-column>
+        <el-table-column prop="subtitle" label="副标题"> </el-table-column>
+        <el-table-column prop="wechat" label="微信号"> </el-table-column>
+        <el-table-column prop="img_url" label="缩略图">
           <template slot-scope="scope">
             <img
               :src="scope.row.img_url"
@@ -32,13 +28,16 @@
         </el-table-column>
         <el-table-column prop="download_url" label="下载链接">
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
+        <el-table-column fixed="right" label="操作" width="150">
           <template slot-scope="scope">
             <el-button
               type="text"
               size="small"
               @click="editDrawerBtn(scope.row)"
               >编辑</el-button
+            >
+            <el-button type="text" size="small" @click="delDrawerBtn(scope.row)"
+              >删除</el-button
             >
           </template>
         </el-table-column>
@@ -50,7 +49,7 @@
 
 <script>
 import editDrawer from "./editDrawer.vue";
-import { getGameList } from "@/api/gameClassify";
+import { getGameList, gameDel } from "@/api/gameClassify";
 export default {
   components: {
     editDrawer,
@@ -82,6 +81,25 @@ export default {
     },
     editDrawerBtn(row) {
       this.$refs.editWeb.init("edit", row);
+    },
+    delDrawerBtn(item) {
+      let params = {
+        id: item.id,
+      };
+      gameDel(params)
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功",
+          });
+          this.getList();
+        })
+        .catch(() => {
+          this.$message({
+            type: "error",
+            message: "删除失败",
+          });
+        });
     },
   },
 };

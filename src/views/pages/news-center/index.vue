@@ -14,11 +14,9 @@
     </div>
     <div class="content-table">
       <el-table :data="listData" stripe size="mini" style="width: 100%">
-        <el-table-column prop="web_url" label="站点" width="200">
-        </el-table-column>
-        <el-table-column prop="title" label="新闻标题" width="200">
-        </el-table-column>
-        <el-table-column prop="img_url" label="缩略图" width="200">
+        <el-table-column prop="web_url" label="站点"> </el-table-column>
+        <el-table-column prop="title" label="新闻标题"> </el-table-column>
+        <el-table-column prop="img_url" label="缩略图">
           <template slot-scope="scope">
             <img
               :src="scope.row.img_url"
@@ -36,13 +34,16 @@
             >
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="100">
+        <el-table-column fixed="right" label="操作" width="150">
           <template slot-scope="scope">
             <el-button
               type="text"
               size="small"
               @click="editDrawerBtn(scope.row, 'edit')"
               >编辑</el-button
+            >
+            <el-button type="text" size="small" @click="delDrawerBtn(scope.row)"
+              >删除</el-button
             >
           </template>
         </el-table-column>
@@ -54,7 +55,7 @@
 
 <script>
 import editDrawer from "./editDrawer.vue";
-import { getNewsList } from "@/api/newsCenter";
+import { getNewsList, newsDel } from "@/api/newsCenter";
 export default {
   components: {
     editDrawer,
@@ -86,6 +87,25 @@ export default {
     },
     editDrawerBtn(row, operation) {
       this.$refs.editWeb.init("edit", row, operation);
+    },
+    delDrawerBtn(item) {
+      let params = {
+        id: item.id,
+      };
+      newsDel(params)
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功",
+          });
+          this.getList();
+        })
+        .catch(() => {
+          this.$message({
+            type: "error",
+            message: "删除失败",
+          });
+        });
     },
   },
 };
