@@ -7,7 +7,7 @@ const routes = [
   {
     path: "/",
     name: "首页",
-    redirect: "/header-img",
+    redirect: "/title-key-desc",
     component: () => import("@/views/pages/index.vue"),
     children: [
       // {
@@ -16,6 +16,12 @@ const routes = [
       //   icon: "el-icon-s-data",
       //   component: () => import("@/views/pages/dashboard/index.vue"),
       // },
+      {
+        path: "/title-key-desc",
+        name: "标题/描述/关键字",
+        icon: "el-icon-s-help",
+        component: () => import("@/views/pages/title-key-desc/index.vue"),
+      },
       {
         path: "/header-img",
         name: "商标管理",
