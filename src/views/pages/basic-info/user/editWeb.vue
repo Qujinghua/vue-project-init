@@ -126,6 +126,7 @@ export default {
 </style>
 <style lang="scss">
 .web-edit-drawer {
+  overflow: auto;
   .el-drawer__header {
     margin-bottom: 0;
     padding: 17px 20px 17px 20px;

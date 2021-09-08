@@ -22,12 +22,12 @@ const routes = [
         icon: "el-icon-s-help",
         component: () => import("@/views/pages/title-key-desc/index.vue"),
       },
-      {
-        path: "/header-img",
-        name: "商标管理",
-        icon: "el-icon-s-flag",
-        component: () => import("@/views/pages/header-img/index.vue"),
-      },
+      // {
+      //   path: "/header-img",
+      //   name: "商标管理",
+      //   icon: "el-icon-s-flag",
+      //   component: () => import("@/views/pages/header-img/index.vue"),
+      // },
       {
         path: "/main-img",
         name: "主图管理",
