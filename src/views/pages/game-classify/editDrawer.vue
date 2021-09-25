@@ -15,6 +15,12 @@
         label-width="120px"
         class="demo-ruleForm"
       >
+        <el-form-item label="是否展示在网页">
+          <el-radio-group v-model="ruleForm.is_show">
+            <el-radio label="0">不展示</el-radio>
+            <el-radio label="1">展示</el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="游戏标题" prop="title">
           <el-input v-model="ruleForm.title"></el-input>
         </el-form-item>
@@ -70,6 +76,7 @@ export default {
       ruleForm: {
         web_url: "",
         web_id: "",
+        is_show: "0",
         title: "",
         subtitle: "",
         wechat: "",
@@ -188,6 +195,7 @@ export default {
       this.ruleForm = {
         web_url: "",
         web_id: "",
+        is_show: "0",
         title: "",
         subtitle: "",
         wechat: "",

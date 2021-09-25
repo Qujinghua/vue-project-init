@@ -1,20 +1,23 @@
 <template>
   <div class="content">
     <div class="content-title">
-      <el-button
-        type="primary"
-        size="small"
-        @click="addWeb"
-        :disabled="listData.length > 4"
+      <el-button type="primary" size="small" @click="addWeb"
         >新增游戏分类</el-button
-      >
-      <span v-if="listData.length > 4"
-        >一个站点最多支持5条游戏分类的展示，如需修改配置请联系网站开发人员</span
       >
     </div>
     <div class="content-table">
       <el-table :data="listData" stripe size="mini" style="width: 100%">
         <el-table-column prop="web_url" label="站点"> </el-table-column>
+        <el-table-column prop="is_show" label="是否展示在网页">
+          <template slot-scope="scope">
+            <span v-if="scope.row.is_show == 1" style="color: #67c23a">{{
+              scope.row.is_show == "0" ? "不展示" : "展示"
+            }}</span>
+            <span v-else style="color: #909399">{{
+              scope.row.is_show == "0" ? "不展示" : "展示"
+            }}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="title" label="游戏标题"> </el-table-column>
         <el-table-column prop="subtitle" label="副标题"> </el-table-column>
         <el-table-column prop="wechat" label="微信号"> </el-table-column>
@@ -43,6 +46,18 @@
         </el-table-column>
       </el-table>
     </div>
+    <div class="content-page">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="searchParams.page"
+        :page-sizes="[10, 20, 50]"
+        :page-size="searchParams.size"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      >
+      </el-pagination>
+    </div>
     <edit-drawer ref="editWeb" @refresh-list="getList"></edit-drawer>
   </div>
 </template>
@@ -58,8 +73,11 @@ export default {
     return {
       searchParams: {
         web_id: "",
+        page: 1,
+        size: 10,
       },
       listData: [],
+      total: 0,
     };
   },
   mounted() {
@@ -71,6 +89,7 @@ export default {
       getGameList(this.searchParams)
         .then((data) => {
           this.listData = data.data.list;
+          this.total = data.data.total;
         })
         .catch((err) => {
           console.log(err);
@@ -78,6 +97,15 @@ export default {
     },
     addWeb() {
       this.$refs.editWeb.init("add");
+    },
+    handleSizeChange(val) {
+      this.searchParams.page = 1;
+      this.searchParams.size = val;
+      this.getList();
+    },
+    handleCurrentChange(val) {
+      this.searchParams.page = val;
+      this.getList();
     },
     editDrawerBtn(row) {
       this.$refs.editWeb.init("edit", row);
